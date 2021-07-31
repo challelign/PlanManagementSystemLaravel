@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App;
 use App\AbelReport;
 use App\Department;
 use App\EkidReport;
@@ -12,10 +13,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\View;
 use PDF;
-use App;
-use Symfony\Component\String\UnicodeString;
 
 
 class FinanceController extends Controller
@@ -26,27 +24,10 @@ class FinanceController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-
-    public function __construct()
-    {
-        $this->middleware(['finance'])->except('logout');
-    }
-
     public function index()
     {
 
         return view('finance.index');
-
-//            ->with('department', Department::all())
-//            ->with('planlist', Plan::all())
-//            ->with('users', User::all());
-
-//            ->with('department', Department::all())
-//            ->with('planlist', Plan::all()
-//                ->where('check_by_super_hidet' ,'1')
-//                ->where('check_by_hidet' ,'1')
-//                ->where('check_by_finance', '0'))
-//                 ->with('users', User::all());
     }
 
     public function donePaymentFirst()
@@ -83,17 +64,6 @@ class FinanceController extends Controller
             ->with('payment', Payment::all());
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     public function viewDetails($id)
     {
         $plan = Plan::findorFail($id);
@@ -110,35 +80,26 @@ class FinanceController extends Controller
 
     }
 
-    public function firstPayment($id)
+    public function firstPaymentStep1(Request $request, $id)
     {
         $plan = Plan::findorFail($id);
+        $planStep = $request->session()->get('planStep ');
+//        return view('products.create-step1',compact('planStep', $planStep));
 //
 //        if ($plan->check_by_hidet == 1 || $plan->check_by_super_hidet == 1 || $plan->check_by_finance == 1) {
 //            session()->flash('error', 'እቅዱን  ማስተካል እትችልም ፣  ለሂደትህ እመልክተሃል ');
 //            return redirect(route('plan'));
 //        }
-        return view('finance.first-payment')
+        return view('finance.first-payment ')
             ->with('plan', $plan)
+            ->with('planStep', $planStep)
             ->with('transport', Transport::all())
             ->with('department', Department::all())
             ->with('payment', Payment::all());
 
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    public function paymentSave(Request $request, $id)
+    public function paymentSaveStep1(Request $request, $id)
     {
 //        dd($request->all());
         $payment = Plan::findorFail($id);
@@ -148,37 +109,49 @@ class FinanceController extends Controller
             return redirect(route('finance'));
         }
 
-        $this->validate($request, [
+        $validatedData = $request->validate([
             'wuloabel' => 'required|numeric|min:0',
-            'transport' =>  'required|numeric|min:0',
-            'metebabekiya' =>  'required|numeric|min:0',
-            'nafta_oil' =>  'required|numeric|min:0',
-            'other' =>  'required|numeric|min:0',
-            'total' =>  'required|numeric|min:0',
-            'voucher_no' => 'required|unique:payments',
-            'pdate' => 'required',
+            'transport' => 'required|numeric|min:0',
+            'metebabekiya' => 'required|numeric|min:0',
+            'nafta_oil' => 'required|numeric|min:0',
+            'other' => 'required|numeric|min:0',
+            'total' => 'required|numeric|min:0',
+//            'voucher_no' => 'required|unique:payments',
+//            'pdate' => 'required',
 //            'plan_id'=>'required|unique'
         ]);
 
+        if (empty($request->session()->get('planStep'))) {
+            $planStep = new Payment();
+            $planStep->fill($validatedData);
+            $request->session()->put('planStep', $planStep);
+        } else {
+            $planStep = $request->session()->get('planStep');
+            $planStep->fill($validatedData);
+            $request->session()->put('planStep', $planStep);
+        }
 //        if ($payment->has('plan')) {
 //            $department_id = $request->department;
 //            $user['department_id'] = $department_id;
 //        }
-        Payment::create([
-            'wuloabel' => $request->wuloabel,
-            'transport' => $request->transport,
-            'metebabekiya' => $request->metebabekiya,
-            'nafta_oil' => $request->nafta_oil,
-            'other' => $request->other,
-            'total' => $request->total,
-            'voucher_no' => $request->voucher_no,
-            'pdate' => $request->pdate,
-            'plan_id' => $payment->id,
-            'approved_by' => Auth::user()->name,
-            'approved_by_image' => Auth::user()->upload_image,
-            'user_id' => $payment->user->id,
 
-        ]);
+
+
+//        Payment::create([
+//            'wuloabel' => $request->wuloabel,
+//            'transport' => $request->transport,
+//            'metebabekiya' => $request->metebabekiya,
+//            'nafta_oil' => $request->nafta_oil,
+//            'other' => $request->other,
+//            'total' => $request->total,
+//            'voucher_no' => $request->voucher_no,
+//            'pdate' => $request->pdate,
+//            'plan_id' => $payment->id,
+//            'approved_by' => Auth::user()->name,
+//            'approved_by_image' => Auth::user()->upload_image,
+//            'user_id' => $payment->user->id,
+//
+//        ]);
 
 
 //        $payment->payment_id = $payment->id;
@@ -186,18 +159,23 @@ class FinanceController extends Controller
 //        $payment->save();
 
 //        $pid = Payment::all()->where('plan_id' ,$id);
-        $pid = Payment::all()->where('plan_id', $id);
-        foreach ($pid as $pp) {
-            $payment_id = $pp->id;
-        }
-//        dd($payment_id);
-
-        $payment->check_by_finance = '1';
 
 
-        $payment->payment_id = $payment_id;
-        $payment->save();
+//        chalie comment start
 
+//        $pid = Payment::all()->where('plan_id', $id);
+//        foreach ($pid as $pp) {
+//            $payment_id = $pp->id;
+//        }
+////        dd($payment_id);
+//
+//        $payment->check_by_finance = '1';
+//
+//
+//        $payment->payment_id = $payment_id;
+//        $payment->save();
+
+//        chalie comment end
 
 //        $payment->wuloabel = $request->wuloabel;
 //        $payment->transport = $request->transport;
@@ -214,11 +192,183 @@ class FinanceController extends Controller
 //        $payment->save();
 
 
-        session()->flash('success', 'ክፍያ ተፈጽሟል  ፡ ደረሰኝ ፕሪንት አርገህ ማህደር አድርግ ');
-        return redirect(route('sample-print',$id));
+//        session()->flash('success', 'ክፍያ ተፈጽሟል  ፡ ደረሰኝ ፕሪንት አርገህ ማህደር አድርግ ');
+//        return redirect(route('sample-print', $id));
         //        return redirect(route('invoice-print',$payment->id));
 
+
+        return redirect(route('first-payment-step2',$id));
     }
+
+    public function firstPaymentStep2(Request $request, $id)
+    {
+        $plan = Plan::findorFail($id);
+        $planStep = $request->session()->get('planStep ');
+//        return view('products.create-step1',compact('planStep', $planStep));
+//
+//        if ($plan->check_by_hidet == 1 || $plan->check_by_super_hidet == 1 || $plan->check_by_finance == 1) {
+//            session()->flash('error', 'እቅዱን  ማስተካል እትችልም ፣  ለሂደትህ እመልክተሃል ');
+//            return redirect(route('plan'));
+//        }
+        return view('finance.first-payment-step2')
+            ->with('plan', $plan)
+            ->with('planStep', $planStep)
+            ->with('transport', Transport::all())
+            ->with('department', Department::all())
+            ->with('payment', Payment::all());
+
+    }
+
+    public function paymentSaveStep2(Request $request, $id)
+    {
+//        dd($request->all());
+        $payment = Plan::findorFail($id);
+
+        if ($payment->check_by_hidet == 1 && $payment->check_by_super_hidet == 1 && $payment->check_by_finance == 1) {
+            session()->flash('error', 'ክፍያ መፈጸም እትችልም ፣  ክፍያ ተከፍሏል ');
+            return redirect(route('finance'));
+        }
+
+        $validatedData = $request->validate([
+//            'wuloabel' => 'required|numeric|min:0',
+//            'transport' => 'required|numeric|min:0',
+//            'metebabekiya' => 'required|numeric|min:0',
+//            'nafta_oil' => 'required|numeric|min:0',
+//            'other' => 'required|numeric|min:0',
+//            'total' => 'required|numeric|min:0',
+            'voucher_no' => 'required|unique:payments',
+            'pdate' => 'required',
+//            'plan_id'=>'required|unique'
+        ]);
+
+        if (empty($request->session()->get('planStep'))) {
+            $planStep = new Payment();
+            $planStep->fill($validatedData);
+            $request->session()->put('planStep', $planStep);
+        } else {
+            $planStep = $request->session()->get('planStep');
+            $planStep->fill($validatedData);
+            $request->session()->put('planStep', $planStep);
+        }
+//        if ($payment->has('plan')) {
+//            $department_id = $request->department;
+//            $user['department_id'] = $department_id;
+//        }
+
+
+
+//        Payment::create([
+//            'wuloabel' => $request->wuloabel,
+//            'transport' => $request->transport,
+//            'metebabekiya' => $request->metebabekiya,
+//            'nafta_oil' => $request->nafta_oil,
+//            'other' => $request->other,
+//            'total' => $request->total,
+//            'voucher_no' => $request->voucher_no,
+//            'pdate' => $request->pdate,
+//            'plan_id' => $payment->id,
+//            'approved_by' => Auth::user()->name,
+//            'approved_by_image' => Auth::user()->upload_image,
+//            'user_id' => $payment->user->id,
+//
+//        ]);
+
+
+//        $payment->payment_id = $payment->id;
+
+//        $payment->save();
+
+//        $pid = Payment::all()->where('plan_id' ,$id);
+
+
+//        chalie comment start
+
+//        $pid = Payment::all()->where('plan_id', $id);
+//        foreach ($pid as $pp) {
+//            $payment_id = $pp->id;
+//        }
+////        dd($payment_id);
+//
+//        $payment->check_by_finance = '1';
+//
+//
+//        $payment->payment_id = $payment_id;
+//        $payment->save();
+
+//        chalie comment end
+
+//        $payment->wuloabel = $request->wuloabel;
+//        $payment->transport = $request->transport;
+//        $payment->metebabekiya = $request->metebabekiya;
+//        $payment->nafta_oil = $request->nafta_oil;
+//        $payment->other = $request->other;
+//
+//        $payment->plan_id = $payment->id;
+//        $payment->approved_by = Auth::user()->name;
+//        $payment->user_id = $payment->user->id;
+//        $payment->wuloabel = $request->wuloabel;
+
+//        dd($payment);
+//        $payment->save();
+
+
+//        session()->flash('success', 'ክፍያ ተፈጽሟል  ፡ ደረሰኝ ፕሪንት አርገህ ማህደር አድርግ ');
+//        return redirect(route('sample-print', $id));
+        //        return redirect(route('invoice-print',$payment->id));
+
+
+        return redirect(route('first-payment-step2',$id));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function samplePrint()
     {
@@ -329,23 +479,6 @@ class FinanceController extends Controller
             ->with('payment', Payment::all());
     }
 
-
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      *
@@ -395,7 +528,9 @@ class FinanceController extends Controller
         return back()->with('success', 'Password Changed Successfully.');
 
     }
-    public function profileSign(){
+
+    public function profileSign()
+    {
         return view('finance.profile-sign');
     }
 }

@@ -49,7 +49,8 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body table-responsive p-0">
-                            <table class="table table-hover table-striped table-bordered" id="dataTableAdmin" style="width:100%">
+                            <table class="table table-hover table-striped table-bordered" id="dataTableAdmin"
+                                   style="width:100%">
                                 <thead class="table-info">
                                 {{--                                <tr>--}}
                                 <th>መነሻ ቀን</th>
@@ -58,7 +59,9 @@
                                 <th>የስራርእስ</th>
                                 <th>የአስተባባሪ ፊርማ</th>
                                 <th>የሂደት መሪ ፊርማ</th>
+                                <th>የም/ስራ አስኪያጅ ፊርማ</th>
                                 <th>ፋየይናንስ ፊርማ</th>
+                                <th>የእቅዱ ሂደት</th>
                                 <th>አስተካክል</th>
                                 <th></th>
                                 <th></th>
@@ -72,47 +75,81 @@
                                             <td>{{$plist->startdate}}</td>
                                             <td>{{$plist->enddate}}</td>
                                             <td>{{$plist->nodate}}</td>
-                                            <td>{{$plist->title}}</td>
+                                            {{--                                            {{ \Illuminate\Support\Str::limit($product, 500, '...') }}--}}
+                                            <td>{{ \Illuminate\Support\Str::limit($plist->title ,15, '...') }}</td>{{--                                            <td>{{str_limit($plist->title ,$limit=15) }}</td>--}}
                                             <td>@if($plist->check_by_hidet == 0)
-                                                    <strong class="text-info">አልተፈረመበትም</strong>
+                                                    <strong class="text-info">በሂደት ላይ</strong>
                                                 @else
-                                                    <strong class="text-info">ተፈርምበታል</strong>
+                                                    <strong class="text-info">ጸድቋል</strong>
 
                                                 @endif
                                             </td>
                                             <td>@if($plist->check_by_super_hidet == 0)
-                                                    <strong class="text-info">አልተፈረመበትም</strong>
+                                                    <strong class="text-info">በሂደት ላይ</strong>
                                                 @else
-                                                    <strong class="text-info">ተፈርምበታል</strong>
+                                                    <strong class="text-info">ጸድቋል</strong>
 
                                                 @endif
                                             </td>
+                                            <td>
+                                                @if($plist->check_by_smanager == 0)
+                                                    <strong class="text-info">በሂደት ላይ</strong>
+                                                @else
+                                                    <strong
+                                                        class="text-info">{{$plist->sign_name_smanager}}</strong>
+                                                @endif
+                                                @if($plist->check_by_wmanager == 0)
+                                                @else
+                                                    <strong
+                                                        class="text-info">{{$plist->sign_name_wmanager}}</strong>
+                                                @endif
+                                            </td>
+
+
                                             <td>@if($plist->check_by_finance == 0)
-                                                    <strong class="text-info">አልተፈረመበትም</strong>
+                                                    <strong class="text-info">በሂደት ላይ</strong>
                                                 @else
-                                                    <strong class="text-info">ተፈርምበታል</strong>
+                                                    <strong class="text-info">ጸድቋል</strong>
 
                                                 @endif
                                             </td>
+
+                                            <td>@if($plist->cancel == 0)
+                                                    <strong class="text-info">በመጠባበቅ ላይ</strong>
+                                                @else
+                                                    <strong class="text-info">
+                                                        ውድቅ ተደርጓል በ ፡
+                                                        {{$plist->cancel_name_smanager}}
+                                                        {{$plist->cancel_name_manager}}
+                                                        {{$plist->cancel_name_wana_image}}
+                                                        {{$plist->cancel_name}}
+                                                    </strong>
+
+                                                @endif
+                                            </td>
+
+
                                             <td>
                                                 <a href="{{route('reporter.edit', $plist->id)}}"
-                                                   class="btn btn-sm btn-info my-2">Edit</a>
+                                                   class="btn btn-sm bg-red my-2">አስተካክል</a>
                                             </td>
                                             <td>
-                                                <button class="btn btn-sm btn-warning"
-                                                        onclick="handelDelete({{$plist->id}})">Delete
+                                                <button class="btn btn-sm btn-red"
+                                                        onclick="handelDelete({{$plist->id}})">ሰርዝ
                                                 </button>
                                             </td>
                                             <td>
-                                                <a href="{{route('reporter.show',$plist->id)}}" class="btn btn-sm btn-warning border-0 my-2"
+                                                <a href="{{route('reporter.show',$plist->id)}}"
+                                                   class="btn btn-sm  btn-red border-0 my-2"
                                                    style="width: 100px">እቅዱን እይ </a>
                                             </td>
                                             <td>
                                                 @if($plist->check_by_hidet == 1  && $plist->check_by_super_hidet == 1 && $plist->check_by_finance == 1)
                                                     @if($plist->payment->total > 0 && $plist->status == 0)
-                                                        <a href="{{route('ekid-report',$plist->id)}}" type="submit" class="btn btn-primary btn-sm">
+                                                        <a href="{{route('ekid-report',$plist->id)}}" type="submit"
+                                                           class="btn btn-red btn-sm">
                                                             ሒሳብ እወራርድ
-{{--                                                            {{$plist->payment->total}}--}}
+                                                            {{--                                                            {{$plist->payment->total}}--}}
                                                         </a>
                                                     @endif
                                                 @endif
@@ -189,8 +226,8 @@
         }
     </script>
 
-{{--@endsection--}}
-{{--@section('js')--}}
+    {{--@endsection--}}
+    {{--@section('js')--}}
 
     <script type="text/javascript" src="{{asset('js/dataTables.bootstrap.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/datatables.js')}}"></script>

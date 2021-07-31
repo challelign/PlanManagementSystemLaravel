@@ -20,10 +20,11 @@ class CreateEkidReportsTable extends Migration
             $table->boolean('ekid_status')->default('0');
             $table->integer('payment_id')->nullable();
             $table->integer('department_id')->nullable();
+            $table->longText('department_name');
             $table->integer('transport_id')->nullable();
             $table->integer('is_ekid_complated')->default(0);
 
-            $table->string('title')->nullable();
+            $table->longText('title')->nullable();
 
             $table->integer('user_id');
 
@@ -34,23 +35,30 @@ class CreateEkidReportsTable extends Migration
             $table->longText('ekid_ont_on_list_done');
             $table->longText('not_done_reason');
 
-            $table->bigInteger('abel_total')->nullable(); // sum of each columns from rows teklala wochi
-            $table->bigInteger('temelash')->nullable();
-            $table->bigInteger('yetekefel')->nullable();  // subtraction form kidmia kifya to abel_total
+            $table->decimal('abel_total')->nullable(); // sum of each columns from rows teklala wochi
+            $table->decimal('temelash')->nullable();
+            $table->decimal('yetekefel')->nullable();  // subtraction form kidmia kifya to abel_total
 
 
-            $table->string('voucher_no')->nullable();
+            $table->longText('voucher_no')->nullable();
 
             $table->string('approved_by')->nullable(); //finance user
-            $table->string('approved_by_image')->nullable(); //finance user
+            $table->longText('approved_by_image')->nullable(); //finance user
 
-            $table->string('sign_name')->nullable(); // id of user hidet
-            $table->string('sign_name_image')->nullable(); // id of user hidet
-            $table->string('sign_name_wana')->nullable(); // id of user azegaj
-            $table->string('sign_name_wana_image')->nullable(); // id of user azegaj
+            $table->longText('sign_name')->nullable(); // id of user hidet
+            $table->longText('sign_name_image')->nullable(); // id of user hidet
+            $table->longText('sign_name_wana')->nullable(); // id of user azegaj
+            $table->longText('sign_name_wana_image')->nullable(); // id of user azegaj
+            $table->longText('sign_name_smanager_image')->nullable(); // id of user
+            $table->longText('sign_name_wmanager_image')->nullable(); // id of user
 
-            $table->string('sign_name_artayi')->nullable(); // id of user
-            $table->string('sign_name_manager')->nullable(); // id of user
+            $table->longText('sign_name_artayi')->nullable(); // id of user
+            $table->longText('sign_name_manager')->nullable(); // id of user
+
+            $table->longText('sign_name_wmanager')->nullable(); // id of user
+            $table->longText('sign_name_smanager')->nullable(); // id of user
+
+
 
             $table->boolean('check_by_hidet')->default('0');
             $table->boolean('check_by_super_hidet')->default('0');
@@ -60,6 +68,8 @@ class CreateEkidReportsTable extends Migration
             $table->boolean('check_by_artayi')->default('0');
             $table->boolean('check_by_manager')->default('0');
 
+            $table->boolean('check_by_smanager')->default('0');
+            $table->boolean('check_by_wmanager')->default('0');
 
             $table->timestamps();
         });

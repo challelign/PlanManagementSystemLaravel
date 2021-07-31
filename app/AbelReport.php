@@ -11,6 +11,7 @@ class AbelReport extends Model
         'dkplace',
 //        'dkbirr',
         'dmplace',
+        'department_name',
 //        'dmbirr',
         'deplace',
 //        'debirr',

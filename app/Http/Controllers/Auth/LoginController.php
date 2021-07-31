@@ -61,10 +61,16 @@ class LoginController extends Controller
         } elseif (Auth::check() && Auth::user()->role_id == 4) {
             $this->redirectTo = '/hidet/home';
             return $this->redirectTo;
-        } elseif (Auth::check() && Auth::user()->role_id == 2) {
+        }
+        elseif (Auth::check() && Auth::user()->role_id == 2) {
             $this->redirectTo = '/wanaazegaj/home';
             return $this->redirectTo;
-        } else {
+        }         elseif (Auth::check() && Auth::user()->role_id == 8) {
+            $this->redirectTo = '/smanager/home';
+            return $this->redirectTo;
+        }
+
+        else {
             return $this->redirectTo = '/';
         }
 

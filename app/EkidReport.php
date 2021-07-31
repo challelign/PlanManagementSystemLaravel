@@ -12,6 +12,7 @@ class EkidReport extends Model
         'payment_id',
         'title',
         'nodate',
+        'department_name',
         'ekid_on_list',
         'ekid_on_list_done',
         'ekid_ont_on_list_done',

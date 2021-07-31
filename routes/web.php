@@ -1,7 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,9 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+//Route::get('/', function () {
+//    return view('welcome');
+//})->name('welcome');
+
+
+Route::view('/','welcome')->name('welcome');
 
 
 
@@ -48,8 +51,18 @@ Route::get('/table', 'HomeController@table')->name('table');
 Route::get('/wel', 'HomeController@wel')->name('wel');
 
 Route::group(['middleware' => 'prevent-back-history'], function () {
-    Auth::routes();
+//    Auth::routes();
 
+    Auth::routes([
+
+        'register' => false, // Register Routes...
+//        'login' => false, // login Routes...
+
+        'reset' => false, // Reset Password Routes...
+
+        'verify' => false, // Email Verification Routes...
+
+    ]);
     Route::get('/reporter/home', 'ReporterController@index')->name('reporter')->middleware('reporter');
     Route::get('/reporter/plan', 'ReporterController@create')->name('plan')->middleware('reporter');
 
@@ -94,6 +107,14 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
     Route::get('/admin/users', 'AdminController@create')->name('users-list')->middleware('admin');
     Route::get('/admin/user-register', 'AdminController@userRegister')->name('user-register')->middleware('admin');
     Route::post('/admin/register', 'AdminController@allRegister')->name('all-register')->middleware('admin');
+
+    Route::get('/admin/user-directorate-create', 'AdminController@userDirectorateCreate')->name('user-directorate-create')->middleware('admin');
+    Route::post('/admin/user-directorate-save', 'AdminController@userDirectorateSave')->name('user-directorate-save')->middleware('admin');
+
+    Route::get('/admin/{id}/user-directorate-edit', 'AdminController@userDirectorateEdit')->name('user-directorate-edit')->middleware('admin');
+    Route::post('/admin/{id}/user-directorate-update', 'AdminController@userDirectorateUpdate')->name('user-directorate-update')->middleware('admin');
+
+    Route::get('/admin/{id}/user-directorate-delete', 'AdminController@userDirectorateDelete')->name('user-directorate-delete')->middleware('admin');
 
 
     Route::get('/admin/{admin}/edit', 'AdminController@edit')->name('edit')->middleware('admin');
@@ -143,6 +164,16 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
     Route::get('/hidet/{hidet}/list-details', 'HidetMeriContoller@viewDetails')->name('hidet-approve-details')->middleware(['auth', 'hidet']);
     Route::post('/hidet/{hidet}/approve-plan', 'HidetMeriContoller@approvePlan')->name('approve-plan')->middleware(['auth', 'hidet']);
 
+
+    Route::post('/hidet/{hidet}/cancel-plan', 'HidetMeriContoller@cancelPlan')->name('cancel-plan')->middleware(['auth', 'hidet']);
+//    Route::post('/hidet/{hidet}/re-approve-plan', 'HidetMeriContoller@reApprovePlan')->name('re-approve-plan')->middleware(['auth', 'hidet']);
+
+
+
+
+
+    Route::get('/hidet/reject-cancel-ekid', 'HidetMeriContoller@cancelEkid')->name('reject-cancel-ekid')->middleware(['auth', 'hidet']);
+
     Route::get('/hidet/list-all', 'HidetMeriContoller@listAll')->name('hidet-list-all')->middleware(['auth', 'hidet']);
     Route::get('/hidet/{hidet}/single-article', 'HidetMeriContoller@listSingle')->name('hidet-single-details')->middleware(['auth', 'hidet']);
 
@@ -163,12 +194,43 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
     Route::get('/hidet/report/{hidet}/single-ekid-detail', 'HidetWuloAbelController@singleEkidDetail')->name('single-ekid-detail')->middleware(['auth', 'hidet']);
 
 
+    Route::get('/hidet/self/self-ekid-home','Self\HidetSelfController@selfEkidHome')->name('self-ekid-home')->middleware(['auth', 'hidet']);
+    Route::get('/hidet/self/self-ekid-canceled','Self\HidetSelfController@selfEkidCanceled')->name('self-ekid-canceled')->middleware(['auth', 'hidet']);
+
+
+
+    Route::get('/hidet/self/self-ekid-create','Self\HidetSelfController@selfEkidCreate')->name('self-ekid-create')->middleware(['auth', 'hidet']);
+    Route::post('/hidet/self/self-ekid-save','Self\HidetSelfController@selfEkidSave')->name('self-ekid-save')->middleware(['auth', 'hidet']);
+
+    Route::get('/hidet/self/{selfid}/self-edit-ekid','Self\HidetSelfController@selfEkidEdit')->name('self-edit-ekid')->middleware(['auth', 'hidet']);
+    Route::post('/hidet/self/{selfid}/self-update-ekid','Self\HidetSelfController@selfEkidUpdate')->name('self-update-ekid')->middleware(['auth', 'hidet']);
+
+    Route::delete('/hidet/self/{selfid}/self-delete-ekid','Self\HidetSelfController@selfEkidDelete')->name('self-delete-ekid')->middleware(['auth', 'hidet']);
+
+
+
+
+
 //    hidet-report-approve-details
 //                                                    hidet-approve-report
 
     Route::get('/wanaazegaj/home', 'WanaAzegajiController@index')->name('wanaazegaj')->middleware(['auth', 'wanaazegaj']);
     Route::get('/wanaazegaj/{wanaazegaj}/list-details', 'WanaAzegajiController@viewDetails')->name('wanaazegaj-approve-details')->middleware(['auth', 'wanaazegaj']);
     Route::post('/wanaazegaj/{wanaazegaj}/approve-plan', 'WanaAzegajiController@approvePlan')->name('wana-approve-plan')->middleware(['auth', 'wanaazegaj']);
+    Route::post('/wanaazegaj/{wanaazegaj}/wana-cancel-plan', 'WanaAzegajiController@wanaCancelPlan')->name('wana-cancel-plan')->middleware(['auth', 'wanaazegaj']);
+
+
+    Route::get('/wanaazegaj/wana-cancel-ekid', 'WanaAzegajiController@wanaCancelEkidList')->name('wana-cancel-ekid-list')->middleware(['auth', 'wanaazegaj']);
+    Route::get('/wanaazegaj/self/self-ekid-home-wana','Self\WanaSelfController@selfEkidHome')->name('self-ekid-home-wana')->middleware(['auth', 'wanaazegaj']);
+    Route::get('/wanaazegaj/self/self-ekid-canceled-wana','Self\WanaSelfController@selfEkidCanceled')->name('self-ekid-canceled-wana')->middleware(['auth', 'wanaazegaj']);
+    Route::get('/wanaazegaj/self/self-ekid-create-wana','Self\WanaSelfController@selfEkidCreate')->name('self-ekid-create-wana')->middleware(['auth', 'wanaazegaj']);
+    Route::post('/wanaazegaj/self/self-ekid-save-wana','Self\WanaSelfController@selfEkidSave')->name('self-ekid-save-wana')->middleware(['auth', 'wanaazegaj']);
+
+    Route::get('/wanaazegaj/self/{selfid}/self-edit-ekid-wana','Self\WanaSelfController@selfEkidEdit')->name('self-edit-ekid-wana')->middleware(['auth', 'wanaazegaj']);
+
+
+
+    Route::get('/wanaazegaj/hidet-ekid-list', 'WanaAzegajiController@hidetEkidList')->name('hidet-ekid-list')->middleware(['auth', 'wanaazegaj']);
 
     Route::get('/wanaazegaj/list-all', 'WanaAzegajiController@listAll')->name('wanaazegaj-list-all')->middleware(['auth', 'wanaazegaj']);
     Route::get('/wanaazegaj/{wanaazegaj}/single-article', 'WanaAzegajiController@listSingle')->name('wanaazegaj-single-details')->middleware(['auth', 'wanaazegaj']);
@@ -187,6 +249,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
     Route::post('/wanaazegaj/report/{wanaazegaj}/wanaazegaj-approve-report', 'WanaAzegajWuloAbelController@wanaazegajApproveReport')->name('wanaazegaj-approve-report')->middleware(['auth', 'wanaazegaj']);
 
 
+
     Route::get('/wanaazegaj/report/ekid-list-all', 'WanaAzegajWuloAbelController@ekidListAll')->name('wanaazegaj-ekid-list-all')->middleware(['auth', 'wanaazegaj']);
     Route::get('/wanaazegaj/report/{wanaazegaj}/single-ekid-detail', 'WanaAzegajWuloAbelController@singleEkidDetail')->name('wanaazegaj-single-ekid-detail')->middleware(['auth', 'wanaazegaj']);
 
@@ -198,8 +261,27 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 //Route::get('/finance/list', 'FinanceController@list')->name('list')->middleware(['auth', 'finance']);
     Route::get('/finance/{finance}/list-details', 'FinanceController@viewDetails')->name('list-details')->middleware(['auth', 'finance']);
 //Route::get('/finance/{finance}/view-details', 'FinanceController@viewDetails')->name('view-details')->middleware(['auth', 'finance']);
-    Route::get('/finance/{finance}/first-payment', 'FinanceController@firstPayment')->name('first-payment')->middleware(['auth', 'finance']);
-    Route::post('/finance/{finance}/first-payment', 'FinanceController@paymentSave')->name('payment-save')->middleware(['auth', 'finance']);
+
+
+
+
+    Route::get('/finance/{finance}/first-payment-step1', 'FinanceController@firstPaymentStep1')->name('first-payment-step1')->middleware(['auth', 'finance']);
+
+
+
+
+    Route::post('/finance/{finance}/first-payment-step1', 'FinanceController@paymentSaveStep1')->name('payment-save-step1')->middleware(['auth', 'finance']);
+
+
+
+    Route::get('/finance/{finance}/first-payment-step2', 'FinanceController@firstPaymentStep2')->name('first-payment-step2')->middleware(['auth', 'finance']);
+    Route::post('/finance/{finance}/first-payment-step2', 'FinanceController@paymentSaveStep2')->name('payment-save-step2')->middleware(['auth', 'finance']);
+
+
+
+
+
+
     Route::get('/finance/done-payment-first', 'FinanceController@donePaymentFirst')->name('done-payment-first')->middleware(['auth', 'finance']);
 
     Route::get('/finance/done-payment-end', 'FinanceController@donePaymentEnd')->name('done-payment-end')->middleware(['auth', 'finance']);
@@ -262,5 +344,35 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 
 //    end report
 
+
+
+//    smanager
+    Route::get('/smanager/home', 'SmanagerController@index')->name('smanager')->middleware(['auth', 'smanager']);
+    Route::get('/smanager/{smanager}/list-details', 'SmanagerController@viewDetails')->name('smanager-approve-details')->middleware(['auth', 'smanager']);
+    Route::post('/smanager/{smanager}/approve-plan', 'SmanagerController@approvePlan')->name('smanager-approve-plan')->middleware(['auth', 'smanager']);
+
+    Route::get('/smanager/list-all', 'SmanagerController@listAll')->name('smanager-list-all')->middleware(['auth', 'smanager']);
+    Route::get('/smanager/{wanaazegaj}/single-article', 'SmanagerController@listSingle')->name('smanager-single-details')->middleware(['auth', 'smanager']);
+
+
+    Route::post('/smanager/{smanager}/smanager-cancel-plan', 'SmanagerController@smanagerCancelPlan')->name('smanager-cancel-plan')->middleware(['auth', 'smanager']);
+    Route::get('/smanager/smanager-cancel-ekid', 'SmanagerController@smanagerCancelEkidList')->name('smanager-cancel-ekid-list')->middleware(['auth', 'smanager']);
+
+
+
+
+
+
+
+
+//for single admin user  change password
+    Route::get('/smanager/change-password', 'SmanagerController@changePassword')->name('change-password-smanager')->middleware(['auth', 'smanager']);
+    Route::post('/smanager/change-password', 'SmanagerController@updatePassword')->name('update-password-smanager')->middleware(['auth', 'smanager']);
+    Route::get('/smanager/profile-sign-smanager', 'SmanagerController@profileSign')->name('profile-sign-smanager')->middleware(['auth', 'smanager']);
+
+
+    Route::get('/smanager/directorate/{smanager}/directorate-ekid-list', 'SmanagerController@directorateEkidList')->name('smanager-directorate-ekid-list')->middleware(['auth', 'smanager']);
+
+//    Route::get('/smanager/directorate/{smanager}/directorate-ekid-list', 'SmanagerController@directorateEkidList')->name('smanager-cancel-ekid-list')->middleware(['auth', 'smanager']);
 
 });

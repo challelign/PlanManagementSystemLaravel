@@ -15,12 +15,6 @@ use Illuminate\Support\Facades\Hash;
 class ReporterController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('reporter');
-    }
-
-
 //
 
     /**
@@ -54,7 +48,7 @@ class ReporterController extends Controller
                 if ($plist->payment->total > 0) {
 
                     session()->flash('error', 'እቅድ ክንውን መሙላት እትችልም ፣ያላወራረድኽውን እቅድ ምረጥ');
-                    return view( 'reporter.plan-seen')
+                    return view('reporter.plan-seen')
                         ->with('transport', Transport::all())
                         ->with('department', Department::all())
                         ->with('payment', Payment::all());
@@ -72,10 +66,16 @@ class ReporterController extends Controller
     public function register()
     {
         $plan = Plan::all();
-        foreach ($plan as $pl){
-            if($pl->is_plan_complated == 0 && $pl->status == 0 && Auth::user()->id == $pl->user_id){
+
+        foreach ($plan as $pl) {
+            if (($pl->is_plan_complated == 0 && $pl->status == 0  && Auth::user()->id == $pl->user_id) && $pl->cancel == 0 ) {
                 session()->flash('error', 'እቅድ መሙላት እትችልም ፣  የመዘገብኽውን እቅድ አላወራረድኽም /እቅድ ክንውን አልጨረስህም ');
                 return redirect(route('plan'));
+            }
+            if ($pl->is_plan_complated == 0 && $pl->status == 0 && $pl->cancel == 1 && Auth::user()->id == $pl->user_id) {
+
+                return view('reporter.register')
+                    ->with('transport', Transport::all());
             }
         }
         return view('reporter.register')
@@ -99,13 +99,15 @@ class ReporterController extends Controller
 //        dd($request->all());
 
 
-
         Plan::create([
             'title' => $request->title,
+            'department_id' => Auth::user()->department_id,
+            'department_name' => Auth::user()->department->name,
             'startdate' => $request->startdate,
             'enddate' => $request->enddate,
             'nodate' => $request->nodate,
             'task' => $request->task,
+            'pre_payment' => $request->pre_payment,
             'user_id' => auth()->user()->id,
             'transport_id' => $request->transport_id
 
@@ -126,7 +128,7 @@ class ReporterController extends Controller
     {
         $plan = Plan::findorFail($id);
 
-        return view( 'reporter.show')
+        return view('reporter.show')
             ->with('plan', $plan)
             ->with('transport', Transport::all())
             ->with('department', Department::all());
@@ -165,6 +167,7 @@ class ReporterController extends Controller
             'startdate' => 'required',
             'enddate' => 'required',
             'nodate' => 'required',
+            'pre_payment' => 'required',
             'transport_id' => 'required',
             'task' => 'required'
         ]);
@@ -189,6 +192,7 @@ class ReporterController extends Controller
         $plan->enddate = $request->enddate;
         $plan->nodate = $request->nodate;
         $plan->task = $request->task;
+        $plan->pre_payment = $request->pre_payment;
         $plan->user_id = auth()->user()->id;
         $plan->transport_id = $request->transport_id;
         $plan->save();

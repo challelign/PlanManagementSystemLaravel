@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-
+<title>{{$users->name}} -Edit profile</title>
 @section('content')
 
 
@@ -112,7 +112,7 @@
                                 <div class="form-group row">
                                     <label for="halafinet"
                                            class="col-md-2 col-form-label text-md-right">ሀላፊነት </label>
-                                    <div class="col-md-8">
+                                    <div class="col-md-4">
                                         <select class="form-control @error('halafinet') is-invalid @enderror"
                                                 required
                                                 name="halafinet">
@@ -142,6 +142,25 @@
                                        </span>
                                         @enderror
                                     </div>
+                                    <label for="salary"
+                                           class="col-md-1 col-form-label text-md-right ">{{ __('ደመወዝ') }}</label>
+                                    <div class="col-md-3">
+                                        <input id="salary" type="text"
+                                               class="form-control @error('salary') is-invalid @enderror"
+                                               name="salary"
+                                               value="{{isset($users)?$users->salary:''}}" required
+
+                                               autocomplete="salary"
+                                               autofocus>
+
+                                        @error('salary')
+                                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                        @enderror
+                                    </div>
+
+
                                 </div>
                                 <div class="form-group row">
                                     <label for="password"

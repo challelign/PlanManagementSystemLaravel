@@ -34,40 +34,7 @@
     <!-- Your custom styles (optional) -->
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
 
-
-    <style>
-        .note-editable, .note-editor.note-airframe .note-editing-area .note-editable {
-            height: 300px;
-        }
-
-        .navbar-light .navbar-nav .nav-link {
-            color: white;
-            font-family: "Segoe UI Semibold";
-        }
-
-        .note-editable, .note-editor.note-airframe .note-editing-area .note-editable {
-            height: 300px;
-        }
-
-        .dropdown-item {
-            color: #00baff;
-        }
-
-        .navbar-no-expand .dropdown-menu {
-            background-color: whitesmoke;
-        }
-
-        .navbar.navbar-light .breadcrumb .nav-item .nav-link, .navbar.navbar-light .navbar-nav .nav-item .nav-link {
-            color: whitesmoke;
-            -webkit-transition: .35s;
-            transition: .35s;
-        }
-
-        .navbar .dropdown-menu a:not(.active) {
-            color: #00baff;
-        }
-    </style>
-
+    <link rel="stylesheet" href="{{asset('css/active.tab.menu.css')}}">
     @yield('css')
 </head>
 <body class="hold-transition layout-top-nav">
@@ -76,9 +43,9 @@
     <!-- Navbar -->
     <nav class="main-header  fixed-top navbar navbar-expand-md navbar-light navbar-white "
          style="background-color: #00aff0; text-color: white; font-size: larger;">
-        <div class="container">
+        <div class="container-fluid">
             <a href="{{route('hidet')}}" class="navbar-brand">
-                <img src="{{asset('img/ammalogo.png')}}" alt="AdminLTE Logo"
+                <img src="{{asset('img/amico.jpg')}}" alt="AdminLTE Logo"
                      class="brand-image img-circle elevation-3"
                      style="opacity: .8">
                 <span class="brand-text font-weight-light">PMS</span>
@@ -92,15 +59,16 @@
             <div class="collapse navbar-collapse order-3" id="navbarCollapse">
                 <!-- Left navbar links -->
                 <ul class="navbar-nav nav">
-
-                    <li class="nav-item">
+                    <li class="{{'hidet/home' == request()->path()?'active':''}}  nav-item">
                         <a href="{{route('hidet')}}" class="nav-link">ያልታዩ እቅዶች <i class="far fa-comments"></i>
 
                             @if ($i = 0)@endif
                             @foreach($planlist as $plist)
-                                @if( Auth::user()->department->id == $plist->user->department->id)
+                                @if( Auth::user()->department->id == $plist->user->department->id && $plist->user->role_id == 3)
                                     @if($plist->check_by_hidet == 0
+                                    && Auth::user()->id != $plist->user_id
                                     && $plist->check_by_super_hidet == 0
+                                    && $plist->cancel == 0
                                     && $plist->check_by_finance == 0 )
                                         @if ($i ++) @endif
                                     @endif
@@ -118,12 +86,13 @@
                     {{--                    <li class="nav-item">--}}
                     {{--                        <a href="{{route('hidet-list-all')}}" class="nav-link">የፈረምክባቸው</a>--}}
                     {{--                    </li>--}}
-                    <li class="nav-item">
-                        <a href="{{route('h1-ekid-report-list')}}" class="nav-link">ያልታዩ እቅድ ክንውኖች <i
+                    <li class="{{'hidet/report/ekid-report-list' == request()->path()?'active':''}}  nav-item">
+
+                    <a href="{{route('h1-ekid-report-list')}}" class="nav-link">ያልታዩ እቅድ ክንውኖች <i
                                 class="far fa-comments"></i>
                             @if ($x = 0)@endif
                             @foreach($ekidreport as $elist)
-                                @if( Auth::user()->department->id == $elist->user->department->id)
+                                @if( Auth::user()->department->id == $elist->user->department->id && $plist->user->role_id == 3)
                                     @if($elist->check_by_hidet == 0
                                     && $elist->check_by_super_hidet == 0
                                     && $elist->check_by_finance == 0
@@ -141,16 +110,17 @@
 
                         </a>
                     </li>
+
                     <li class="nav-item dropdown">
                         <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true"
                            aria-expanded="false" class="nav-link dropdown-toggle">የተፈረመባቸው እቅዶች </a>
                         <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
                             <li>
-                                <a href="{{route('hidet-list-all')}}" class="dropdown-item"
+                                <a class="{{'hidet/list-all' == request()->path()?'active':''}} dropdown-item" href="{{route('hidet-list-all')}}"
                                    style="text-wrap: inherit; text-align: center">እቅዶች</a>
                             </li>
                             <li>
-                                <a href="{{route('ekid-list-all')}}" class="dropdown-item"
+                                <a class="{{'hidet/report/ekid-list-all' == request()->path()?'active':''}} dropdown-item" href="{{route('ekid-list-all')}}"
                                    style="text-wrap: inherit; text-align: center">እቅድ
                                     ክንውኖች</a>
                             </li>
@@ -159,6 +129,18 @@
                             </li>
                         </ul>
                     </li>
+
+
+                    <li class="{{'hidet/reject-cancel-ekid' == request()->path()?'active':''}} nav-item">
+                        <a href="{{route('reject-cancel-ekid')}}" class="nav-link">የተሰረዙ እቅዶች
+                        </a>
+                    </li>
+                    <li class="nav-item {{'hidet/self/self-ekid-home' == request()->path()?'active':''}}">
+                        <a href="{{route('self-ekid-home')}}" class="nav-link">የራስን አቅድ
+                        </a>
+                    </li>
+
+
                 </ul>
             </div>
 

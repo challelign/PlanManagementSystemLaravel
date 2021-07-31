@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Department;
 use App\Http\Requests\AdminUserStoreRequest;
-use App\Payment;
 use App\Plan;
 use App\Role;
-use App\Transport;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -64,6 +62,7 @@ class AdminController extends Controller
 
         User::create([
             'name' => $request->name,
+            'salary' => $request->salary,
             'username' => $request->username,
             'role_id' => $request->halafinet,
             'department_id' => $request->department,
@@ -117,7 +116,7 @@ class AdminController extends Controller
             $user->save();
             return response()->json([
                 'path' => '/storage/crop_image/' . $image_name,
-                'success'  => 'የ '.$user->name. ' ፊርማ አስገብተሀል :'
+                'success' => 'የ ' . $user->name . ' ፊርማ አስገብተሀል :'
             ]);
 
         }
@@ -180,6 +179,7 @@ class AdminController extends Controller
 //        dd($request->all());
         $this->validate($request, [
             'name' => 'required',
+            'salary' => 'required|numeric:6',
             'username' => 'required|unique:users',
             'password' => 'required|string|min:6|confirmed'
         ]);
@@ -197,6 +197,7 @@ class AdminController extends Controller
         }
 
         $user->name = $request->name;
+        $user->salary = $request->salary;
         $user->username = $request->username;
         $user->password = Hash::make($request['password']);
         $user->department_id = $department_id;
@@ -303,4 +304,64 @@ class AdminController extends Controller
 
     }
 
+    public function userDirectorateCreate()
+    {
+        return view('admin.user-directorate')
+            ->with('department', Department::all());
+    }
+
+    public function userDirectorateSave(Request $request)
+    {
+//        dd($request->all());
+        $this->validate($request, [
+            'name' => 'required|unique:departments|string|min:6',
+            'slug' => 'required|unique:departments|string|min:6'
+        ]);
+
+        Department::create([
+            'name' => $request->name,
+            'slug' => $request->slug,
+        ]);
+
+
+        session()->flash('success', 'እዲስ የሰራ ሒደት/ዳይሬክቶሬት  መዝግበሃል፡');
+//        return redirect(route('all-register'));
+        return redirect()->back();
+    }
+
+    public function userDirectorateDelete($id)
+    {
+        $dept = Department::findorFail($id);
+        $user = User::all()->where('department_id', $dept->id);
+
+        if ($user->count() > 0) {
+            session()->flash('error', 'የስራ ሒደት መሰረዝ  አትችልም ፣በስሩ የተመዘገብ ሰራተኛ አለ::');
+            return redirect()->back();
+        }
+        $dept->delete();
+        session()->flash('success', 'የስራ ሒደት ሰርዘሀል።   ');
+        return redirect()->back();
+    }
+
+    public function userDirectorateEdit($id)
+    {
+
+        $dept = Department::findorFail($id);
+        return view('admin.user-directorate')->with('dept', $dept);
+    }
+
+    public function userDirectorateUpdate(Request $request, $id)
+    {
+        $this->validate($request, [
+            'name' => 'required|unique:departments|string|min:6',
+            'slug' => 'required|unique:departments|string|min:6'
+        ]);
+
+        $dept = Department::find($id);
+        $dept->name = $request->name;
+        $dept->slug = $request->slug;
+        $dept->save();
+        session()->flash('success', 'የስራ ሒደት አስተካክለሀል መዝግበሃል');
+        return redirect(route('users-list'));
+    }
 }

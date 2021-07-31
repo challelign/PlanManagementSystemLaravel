@@ -6,18 +6,12 @@ use App\Department;
 use App\Payment;
 use App\Plan;
 use App\Transport;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class HidetMeriContoller extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('hidet');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -26,25 +20,8 @@ class HidetMeriContoller extends Controller
     public function index()
     {
         return view('hidet.index');
-
-//            ->with('department', Department::all())
-//            ->with('planlist', Plan::all()
-//                ->where('check_by_super_hidet' ,'0')
-//                ->where('check_by_hidet' ,'0')
-//                ->where('check_by_finance', '0'))
-//            ->with('users', User::all());
-
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     public function viewDetails($id)
     {
@@ -88,16 +65,33 @@ class HidetMeriContoller extends Controller
         return redirect(route('hidet'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function cancelPlan(Request $request, $id)
     {
-        //
+
+        $approve = Plan::findorFail($id);
+        $approve->cancel_name = Auth::user()->name;
+        $approve->cancel = '1';
+//        $approve->check_by_hidet = '0';
+        $approve->save();
+
+        session()->flash('error', 'እቅዱን ውድቅ አድርገሀል ');
+        return redirect()->back();
     }
+//    public function reApprovePlan(Request $request, $id)
+//    {
+//
+//        $approve = Plan::findorFail($id);
+//        $approve->check_by_hidet = '1';
+//        $approve->department_id = Auth::user()->department_id;
+//        $approve->cancel = '0';
+//        $approve->sign_name = Auth::user()->name;
+//        $approve->sign_name_image = Auth::user()->upload_image;
+//        $approve->cancel_name ='';
+//        $approve->save();
+//
+//        session()->flash('success', 'እቅዱን በድጋሚ አጸድቀሀል ');
+//        return redirect()->back();
+//    }
 
     public function listAll()
     {
@@ -114,49 +108,13 @@ class HidetMeriContoller extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function cancelEkid()
     {
-        //
-    }
+        return view('hidet.rejected.cancel-ekid')
+            ->with('planlist', Plan::all())
+            ->with('transport', Transport::all())
+            ->with('department', Department::all());
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 
 
@@ -187,7 +145,8 @@ class HidetMeriContoller extends Controller
 
     }
 
-    public function profileSign(){
+    public function profileSign()
+    {
         return view('hidet.profile-sign');
     }
 

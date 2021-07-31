@@ -47,7 +47,7 @@
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
-    <style>
+    {{--> <style
         .navbar-light .navbar-nav .nav-link {
             color: white;
             font-family: "Segoe UI Semibold";
@@ -72,7 +72,10 @@
         }
 
 
-    </style>
+    </style>--}}
+
+    <link rel="stylesheet" href="{{asset('css/active.tab.menu.css')}}">
+
     @yield('css')
 
 </head>
@@ -99,12 +102,15 @@
                 <!-- Left navbar links -->
                 <ul class="navbar-nav">
 
-                        <li class="nav-item">
-                            <a href="{{route('users-list')}}" class="nav-link">Users</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{route('user-register')}}" class="nav-link">User Register</a>
-                        </li>
+                    <li class="nav-item">
+                        <a href="{{route('users-list')}}" class="nav-link">ተጠቃሚወች</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('user-register')}}" class="nav-link">ተጠቃሚ መዝብብ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('user-directorate-create')}}" class="nav-link">የሰራ ሒደት መዝግብ</a>
+                    </li>
                     {{--                    ekid  directorate--}}
 
                     <li class="nav-item dropdown">
@@ -136,11 +142,11 @@
                         </div>
                     </li>
 
-{{--                    ekid reprt directorate--}}
+                    {{--                    ekid reprt directorate--}}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            እቅድ ሪፖርት  ዳይሬክቶሬት
+                            እቅድ ሪፖርት ዳይሬክቶሬት
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
@@ -189,7 +195,8 @@
                               style="display: none;">
                             @csrf
                         </form>
-                        <a class="dropdown-item" href="{{route('change-password')}}" style="color: #00b7ff; text-align: center">
+                        <a class="dropdown-item" href="{{route('change-password')}}"
+                           style="color: #00b7ff; text-align: center">
 
                             Change Password
                         </a>
@@ -221,9 +228,7 @@
                     </div>
                 </div>
             </div>
-
             @yield('content')
-
         </div>
 
         <!-- /.content-wrapper -->
@@ -231,16 +236,17 @@
         <!-- /.control-sidebar -->
 
         <!-- Main Footer -->
-        <footer class="main-footer">
-            <!-- To the right -->
-            <div class="float-right d-none d-md-inline">
-                PMS
-            </div>
-            <!-- Default to the left -->
-            <strong>Copyright &copy; 2014-2019 <a href="">Challelign Tilahun</a>.</strong> All rights reserved.
-        </footer>
+
     </div>
 
+    <footer class="main-footer">
+        <!-- To the right -->
+        <div class="float-right d-none d-md-inline">
+            PMS
+        </div>
+        <!-- Default to the left -->
+        <strong>Copyright &copy; 2014-2019 <a href="">Challelign Tilahun</a>.</strong> All rights reserved.
+    </footer>
     <!-- jQuery -->
     <script src="{{asset ('plugins/jquery/jquery.min.js')}}"></script>
     <!-- jQuery UI 1.11.4 -->
@@ -292,7 +298,7 @@
 
 
     <script src="{{asset ('js/nav-chalie.js')}}"></script>
-@yield('js')
+    @yield('js')
 </div>
 </body>
 </html>

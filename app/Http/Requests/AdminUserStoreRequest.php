@@ -30,6 +30,7 @@ class AdminUserStoreRequest extends FormRequest
 
 
             'name' => ['required','string','max:50'],
+            'salary' => ['numeric','max:80000'],
             'username' => ['required','unique:users','string','max:15'],
             'halafinet' => 'required', // user id
             'department' => 'required', // department id

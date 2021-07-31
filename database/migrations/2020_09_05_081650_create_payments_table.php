@@ -18,17 +18,17 @@ class CreatePaymentsTable extends Migration
             $table->integer('wuloabel')->nullable();
             $table->integer('user_id');//  user for
             $table->text('pdate');//  user for
-            $table->integer('plan_id')->unique();
-            $table->string('approved_by');
+            $table->decimal('plan_id')->unique();
+            $table->longText('approved_by');
             $table->string('approved_by_image')->nullable();
-            $table->integer('transport')->nullable();
-            $table->integer('nafta_oil')->nullable();
-            $table->integer('metebabekiya')->nullable();
-            $table->integer('other')->nullable();
-            $table->integer('total');
+            $table->decimal('transport')->nullable();
+            $table->decimal('nafta_oil')->nullable();
+            $table->decimal('metebabekiya')->nullable();
+            $table->decimal('other')->nullable();
+            $table->decimal('total');
             $table->boolean('is_teworardual')->default('0');
 
-            $table->string('voucher_no');
+            $table->longText('voucher_no');
 //            $table->string('inwords')->nullable();
             $table->timestamps();
 

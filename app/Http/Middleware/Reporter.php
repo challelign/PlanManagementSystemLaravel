@@ -40,6 +40,9 @@ class Reporter
             return redirect()->route('hidet');
 
         }
+        if (Auth::user()->role_id == 8) {
+            return redirect()->route('smanager');
+        }
 
     }
 }

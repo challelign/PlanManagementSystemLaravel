@@ -49,8 +49,9 @@
 
     <!-- Your custom styles (optional) -->
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('css/active.tab.menu.css')}}">
 
-    <style>
+   {{-- <style>
         .note-editable, .note-editor.note-airframe .note-editing-area .note-editable {
             height: 300px;
         }
@@ -81,7 +82,7 @@
         .navbar .dropdown-menu a:not(.active) {
             color: #00baff;
         }
-    </style>
+    </style>--}}
 
 
     @yield('css')
@@ -92,7 +93,7 @@
 
     {{--    @if(auth()->user()->department->name == 'ግዥ፣ ፋይናንስና ንብረት አስተዳደር ደጋፊ የስራ ሂደት')--}}
     <nav class="main-header navbar fixed-top navbar-expand-md navbar-light navbar-white "
-         style="background-color: #00aff0; text-color: white; font-size: medium;">
+         style="background-color: #f00000; text-color: white; font-size: medium;">
         <div class="container-fluid">
             <a href="{{route('finance')}}" class="navbar-brand">
                 <img src="{{asset('img/ammalogo.png')}}" alt="PMS"
@@ -122,7 +123,7 @@
                                     @if ($i ++) @endif
                                 @endif
                             @endforeach
-                            <span class="badge badge-danger navbar-badge">
+                            <span class="badge badge-info navbar-badge">
                             {{$i}}
                             </span></a>
                         {{--                        {{$planlist->count()}}--}}
@@ -140,7 +141,7 @@
                                     @if ($x ++) @endif
                                 @endif
                             @endforeach
-                            <span class="badge badge-danger navbar-badge">
+                            <span class="badge badge-info navbar-badge">
                                 {{$x}}
                             </span>
                         </a>

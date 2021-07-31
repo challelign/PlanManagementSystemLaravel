@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Database\Seeder;
-use App\User;
-use App\Transport;
 use App\Department;
 use App\Role;
+use App\Transport;
+use App\User;
+use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
 {
@@ -20,24 +20,35 @@ class UserSeeder extends Seeder
         ]);
 
         $role2 = Role::create([
-            'name' => 'ዋና አዘጋጅ',
+            'name' => 'ዋና አዘጋጅ (ዋና/ዳይሬክተር)',
         ]);
         $role4 = Role::create([
-            'name' => 'ጋዜጠኛ',
+            'name' => 'ሰራተኛ',
         ]);
         $role3 = Role::create([
-            'name' => 'ምክትል ዋና አዘጋጅ',
+            'name' => 'ምክትል ዋና አዘጋጅ (ም/ዳይሬክተር)',
         ]);
         $role5 = Role::create([
-            'name' => 'ፋይናንስ',
-        ]);$role6 = Role::create([
+            'name' => 'ፋይናንስ ባለሙያ',
+        ]);
+        $role6 = Role::create([
             'name' => 'ፋይናንስ ሀላፊ',
+        ]);
+        $role7 = Role::create([
+            'name' => 'ዋና ስራ አስኪያጅ',
+        ]);
+        $role8 = Role::create([
+            'name' => 'ምክትል ስራ አስኪያጅ',
         ]);
 
 
         $depatment1 = Department::create([
             'name' => 'ዋና ስራ አስኪያጅ',
             'slug' => 'ስራ አስኪያጅ',
+        ]);
+        $depatment21 = Department::create([
+            'name' => 'ምክትል ስራ አስኪያጅ',
+            'slug' => 'ም/ስራ አስኪያጅ',
         ]);
 
         $depatment2 = Department::create([
@@ -141,7 +152,7 @@ class UserSeeder extends Seeder
             'name' => 'Challelign Tilahun',
             'role_id' => $role1->id,
             'password' => Hash::make('passpass'),
-            'department_id'=>$department20->id
+            'department_id' => $department20->id
 
         ]);
 
@@ -150,7 +161,7 @@ class UserSeeder extends Seeder
             'name' => 'Desalegne Kindu',
             'role_id' => $role2->id,
             'password' => Hash::make('adminadmin'),
-            'department_id'=>$department10->id
+            'department_id' => $department10->id
         ]);
 
         $hidetmeri = User::create([
@@ -158,7 +169,7 @@ class UserSeeder extends Seeder
             'name' => 'Hayileyesus Adugna',
             'role_id' => $role3->id,
             'password' => Hash::make('adminadmin'),
-            'department_id'=>$department10->id
+            'department_id' => $department10->id
         ]);
 //
         $reporter = User::create([
@@ -166,7 +177,7 @@ class UserSeeder extends Seeder
             'name' => 'Zelalem Asfaw',
             'role_id' => $role4->id,
             'password' => Hash::make('adminadmin'),
-            'department_id'=>$department10->id
+            'department_id' => $department10->id
         ]);
 
         $finance = User::create([
@@ -174,14 +185,14 @@ class UserSeeder extends Seeder
             'name' => 'Aklilu Yeniesew',
             'role_id' => $role5->id,
             'password' => Hash::make('adminadmin'),
-            'department_id'=>$department17->id
+            'department_id' => $department17->id
         ]);
         $fmanager = User::create([
             'username' => 'finacemanager',
             'name' => 'Finance manager',
             'role_id' => $role6->id,
             'password' => Hash::make('adminadmin'),
-            'department_id'=>$department17->id
+            'department_id' => $department17->id
         ]);
 
     }

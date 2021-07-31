@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         'finance' => \App\Http\Middleware\Finance::class,
         'hidet' => \App\Http\Middleware\Hidet::class,
         'wanaazegaj' => \App\Http\Middleware\WanaAzegaji::class,
+        'smanager' => \App\Http\Middleware\Smanager::class,
 
         'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
 

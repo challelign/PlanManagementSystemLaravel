@@ -1,0 +1,53 @@
+
+
+.note-editable, .note-editor.note-airframe .note-editing-area .note-editable {
+    height: 300px;
+}
+
+/* start active*/
+navbar.navbar-light .breadcrumb .nav-item.active>.nav-link, .navbar.navbar-light .navbar-nav .nav-item.active>.nav-link {
+    /*the backgrund is transpartent*/
+    background-color: rgba(255, 0, 0, 0);
+    border-radius: 2px ;solid-color: green;
+    border-top: 5px  solid  red;
+
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    color: #fff;
+    text-decoration: none;
+    /*background-color: red;*/
+
+    border-top: 5px  solid  red;
+    border-radius: 2px;
+}
+
+/*end active */
+
+.navbar-light .navbar-nav .nav-link {
+    color: white;
+    font-family: "Segoe UI Semibold";
+}
+
+.note-editable, .note-editor.note-airframe .note-editing-area .note-editable {
+    height: 300px;
+}
+
+.dropdown-item {
+    color: #00baff;
+}
+
+.navbar-no-expand .dropdown-menu {
+    background-color: whitesmoke;
+}
+
+.navbar.navbar-light .breadcrumb .nav-item .nav-link, .navbar.navbar-light .navbar-nav .nav-item .nav-link {
+    color: whitesmoke;
+    -webkit-transition: .35s;
+    transition: .35s;
+}
+
+.navbar .dropdown-menu a:not(.active) {
+    color: #00baff;
+}
+

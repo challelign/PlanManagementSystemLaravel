@@ -16,9 +16,12 @@
                     <h1 class="m-0 text-dark"> የእቅዶች <small>ዝርዝር {{Auth::user()->department->name}}
                             @if ($i = 0)@endif
                             @foreach($planlist as $plist)
-                                @if( Auth::user()->department->id == $plist->user->department->id)
+                                @if( Auth::user()->department->id == $plist->user->department->id && $plist->user->role_id == 3)
                                     @if($plist->check_by_hidet == 0
+                                    && Auth::user()->id != $plist->user_id
                                     && $plist->check_by_super_hidet == 0
+                                    && $plist->cancel == 0
+                                    && $plist->check_by_smanager == 0
                                     && $plist->check_by_finance == 0 )
                                         @if ($i ++) @endif
                                     @endif
@@ -71,11 +74,12 @@
                             @if($i === 0)
 
                                 <div class="card-header text-center">
-                                    <h3 class="text-center text-info"> NO PLANS'S YET </h3>
+                                    <h3 class="text-center text-info">የተላከ አቅድ የለም </h3>
 
                                 </div>
                             @else
-                                <table class="table table-hover table-striped table-bordered" id="dataTableAdmin" style="width:100%">
+                                <table class="table table-hover table-striped table-bordered" id="dataTableAdmin"
+                                       style="width:100%">
                                     <thead class="table-info">
 
                                     <th>ሙሉ ስም</th>
@@ -86,15 +90,19 @@
                                     <th>ሂደት</th>
                                     <th>የአስተባባሪ ፊርማ</th>
                                     <th>የሂደት መሪ ፊርማ</th>
+                                    <th>ም/ስራ አስኪያጅ(ዋና ስራ አስኪያጅ)</th>
                                     <th>ፋየይናንስ ፊርማ</th>
+                                    <th>የእቅዱ ሂደት</th>
                                     <th></th>
                                     <th></th>
-{{--                                    <th></th>--}}
+                                    <th></th>
                                     </thead>
                                     <tbody>
                                     @foreach($planlist as $plist)
-                                        @if(($plist->check_by_hidet == 0 && $plist->check_by_super_hidet == 0 &&
-                                                Auth::user()->department->id == $plist->user->department->id
+                                        @if(($plist->check_by_hidet == 0 && $plist->check_by_super_hidet == 0
+                                      && Auth::user()->id != $plist->user_id &&
+                                                Auth::user()->department->id == $plist->user->department->id &&
+                                                $plist->cancel == 0
                                                 ))
                                             <tr>
                                                 <td>{{$plist->user->name}}</td>
@@ -103,50 +111,101 @@
                                                 <td>{{$plist->nodate}}</td>
                                                 <td>{{$plist->title}}</td>
                                                 <td>{{$plist->user->department->name}}</td>
+
+
                                                 <td>@if($plist->check_by_hidet == 0)
-                                                        <strong class="text-info">አልተፈረመበትም</strong>
+                                                        <strong class="text-info">በሂደት ላይ</strong>
                                                     @else
-                                                        <strong class="text-info">ተፈርምበታል</strong>
+                                                        <strong class="text-info">ጸድቋል</strong>
 
                                                     @endif
                                                 </td>
                                                 <td>@if($plist->check_by_super_hidet == 0)
-                                                        <strong class="text-info">አልተፈረመበትም</strong>
+                                                        <strong class="text-info">በሂደት ላይ</strong>
                                                     @else
-                                                        <strong class="text-info">ተፈርምበታል</strong>
+                                                        <strong class="text-info">ጸድቋል</strong>
 
+                                                    @endif
+                                                </td>
+                                                {{--                                                <td>@if($plist->check_by_smanager == 0)--}}
+                                                {{--                                                        <strong class="text-info">በሂደት ላይ</strong>--}}
+                                                {{--                                                    @else--}}
+                                                {{--                                                        <strong class="text-info">ጸድቋል</strong>--}}
+
+                                                {{--                                                    @endif--}}
+                                                {{--                                                </td>--}}
+
+
+                                                <td>@if($plist->check_by_smanager == 0)
+                                                        <strong class="text-info">በሂደት ላይ</strong>
+                                                    @else
+                                                        <strong
+                                                            class="text-info">{{$plist->sign_name_smanager}}</strong>
+                                                    @endif
+                                                    @if($plist->check_by_wmanager == 0)
+                                                        {{--                                                        <strong class="text-info">በሂደት ላይ</strong>--}}
+                                                    @else
+                                                        <strong
+                                                            class="text-info">{{$plist->sign_name_wmanager}}</strong>
                                                     @endif
                                                 </td>
                                                 <td>@if($plist->check_by_finance == 0)
-                                                        <strong class="text-info">አልተፈረመበትም</strong>
+                                                        <strong class="text-info">በሂደት ላይ</strong>
                                                     @else
-                                                        <strong class="text-info">ተፈርምበታል</strong>
+                                                        <strong class="text-info">ጸድቋል</strong>
 
                                                     @endif
                                                 </td>
 
+                                                <td>@if($plist->cancel == 0)
+                                                        <strong class="text-info">በመጠባበቅ ላይ</strong>
+                                                    @else
+                                                        <strong class="text-info">
+                                                            ውድቅ ተደርጓል በ ፡
+                                                            {{$plist->cancel_name_smanager}}
+                                                            {{$plist->cancel_name_manager}}
+                                                            {{$plan->cancel_name_wana}}
+
+                                                            {{$plist->cancel_name}}
+                                                        </strong>
+
+                                                    @endif
+                                                </td>
 
                                                 <td>
 
 
                                                     <a href="{{route('hidet-approve-details',$plist->id)}}"
-                                                       class="btn btn-sm btn-info">እይ </a>
+                                                       class="btn btn-sm btn-primary">እይ </a>
 
                                                 </td>
+                                                <td>@if($plist->cancel == 0)
+                                                        @if($plist->check_by_finance == 0)
+                                                            <form action="{{route('approve-plan',$plist->id)}}"
+                                                                  method="post">
+                                                                @csrf
+                                                                <button
+                                                                    class="btn btn-sm btn-info my-0">ማጽደቅ
+                                                                </button>
+                                                            </form>
 
-                                                @if($plist->check_by_finance == 0)
-                                                    <td>
-                                                        <form action="{{route('approve-plan',$plist->id)}}"
+                                                        @endif
+                                                    @endif
+                                                </td>
+
+
+                                                <td>
+                                                    @if($plist->cancel == 0)
+                                                        <form action="{{route('cancel-plan',$plist->id)}}"
                                                               method="post">
                                                             @csrf
                                                             <button
-                                                                class="btn btn-sm btn-warning my-0">አረጋግጥ
+                                                                class="btn btn-sm btn-red my-0" style="width: 100px">ውድቅ
+                                                                አድርግ
                                                             </button>
                                                         </form>
-                                                    </td>
-                                                @endif
-
-
+                                                    @endif
+                                                </td>
                                             </tr>
                                         @endif
 

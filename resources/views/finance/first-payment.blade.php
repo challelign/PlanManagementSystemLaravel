@@ -9,7 +9,7 @@
         <div class="container">
             <div class="row mb-2">
                 <div class="col-sm-12">
-                    <h1 class="m-0 text-dark">{{$plan->user->name}} <small>ቅድመ ክፍያ</small></h1>
+                    <h1 class="m-0 text-dark">{{$plan->user->name}} <small>ቅድመ ክፍያ Step 1</small></h1>
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -21,114 +21,45 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-header"> ቅድመ ክፍያ</div>
+                        <div class="card-header"> ቅድመ ክፍያ step 1</div>
                         <div class="card-body">
-
-                            {{--                            <form action="" id="sumOf" method="POST">--}}
-                            {{--                                @csrf--}}
-
-                            {{--                                --}}{{--Full name --}}
-                            {{--                                <div class="form-group row">--}}
-                            {{--                                    <label for="wuloabel"--}}
-                            {{--                                           class="col-md-2 col-form-label text-md-right">ለውሎ አብል ብር</label>--}}
-                            {{--                                    <div class="col-md-3 form-group">--}}
-                            {{--                                        <input id="wuloabel" type="number"--}}
-                            {{--                                               class="form-control  txtCal">--}}
-                            {{--                                    </div>--}}
-                            {{--                                    --}}{{--User name--}}
-
-                            {{--                                    <label for="transport"--}}
-                            {{--                                           class="col-md-2 col-form-label text-md-right ">ለትራንስፐት ብር</label>--}}
-                            {{--                                    <div class="col-md-3 form-group">--}}
-                            {{--                                        <input id="transport" type="number"--}}
-                            {{--                                               class="form-control txtCal" name="transport">--}}
-                            {{--                                    </div>--}}
-
-                            {{--                                </div>--}}
-                            {{--                                <div class="form-group row">--}}
-                            {{--                                    <label for="nafta_oil"--}}
-                            {{--                                           class="col-md-2 col-form-label text-md-right">ለነዳጅና ለቅባት ብር</label>--}}
-                            {{--                                    <div class="col-md-3 form-group">--}}
-                            {{--                                        <input id="nafta_oil" class="form-control txtCal" type="number"--}}
-                            {{--                                               name="nafta_oil">--}}
-
-                            {{--                                    </div>--}}
-                            {{--                                    --}}{{--User name--}}
-
-                            {{--                                    <label for="metebabekiya"--}}
-                            {{--                                           class="col-md-2 col-form-label text-md-right ">ለመጠባብቂያ ብር</label>--}}
-                            {{--                                    <div class="col-md-3 form-group">--}}
-                            {{--                                        <input id="metebabekiya" type="number"--}}
-                            {{--                                               class="form-control metebabekiya txtCal" name="metebabekiya">--}}
-                            {{--                                    </div>--}}
-
-                            {{--                                </div>--}}
-                            {{--                                <div class="form-group row">--}}
-                            {{--                                    <label for="other"--}}
-                            {{--                                           class="col-md-2 col-form-label text-md-right">ሌሎች ብር</label>--}}
-                            {{--                                    <div class="col-md-3">--}}
-                            {{--                                        <input id="" type="number"--}}
-                            {{--                                               class="form-control"--}}
-                            {{--                                               name="other">--}}
-
-                            {{--                                        --}}{{--User name--}}
-                            {{--                                    </div>--}}
-                            {{--                                    <label for="total"--}}
-                            {{--                                           class="col-md-2 col-form-label text-md-right ">ድመር</label>--}}
-                            {{--                                    <div class="col-md-3 form-group">--}}
-                            {{--                                        <input id="total" type="number" readonly--}}
-                            {{--                                               class="form-control " name="total">--}}
-                            {{--                                    </div>--}}
-
-                            {{--                                </div>--}}
-
-                            {{--                                <div class="form-group row mb-0">--}}
-                            {{--                                    <div class="col-md-4 offset-md-2">--}}
-                            {{--                                        <a href="{{route('finance')}}" class="btn btn-info">ተመለስ</a>--}}
-                            {{--                                        <button type="submit" class="btn btn-primary">--}}
-                            {{--                                            {{ __('ክፍያ መዝግብ') }}--}}
-                            {{--                                        </button>--}}
-                            {{--                                    </div>--}}
-                            {{--                                </div>--}}
-
-                            {{--                            </form>--}}
-                            <form action="" id="myform" method="post" action="{{route('payment-save',$plan->id)}}">
+                            <form action="" id="myform" method="post" action="{{route('payment-save-step1',$plan->id)}}">
                                 @include('layouts.errors')
                                 <input type="text" hidden name="plan_id" id="plan_id" value="{{$plan->id}}"
                                        class='form-control txtCal'/>
 
                                 @csrf
-                                <div class="col-md-12  row">
-                                    <div class="col-md-6">
-                                        <label>ቀን :</label>
-                                        <div class="form-group "><input type="text" name="pdate" readonly required
-                                                                        id="pdate"
+{{--                                <div class="col-md-12  row">--}}
+{{--                                    <div class="col-md-6">--}}
+{{--                                        <label>ቀን :</label>--}}
+{{--                                        <div class="form-group "><input type="text" name="pdate" readonly required--}}
+{{--                                                                        id="pdate"--}}
 
-                                                                        class="form-control @error('pdate') is-invalid @enderror"
-                                                                        autocomplete="pdate" autofocus/>
-                                            @error('pdate')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
+{{--                                                                        class="form-control @error('pdate') is-invalid @enderror"--}}
+{{--                                                                        autocomplete="pdate" autofocus/>--}}
+{{--                                            @error('pdate')--}}
+{{--                                            <span class="invalid-feedback" role="alert">--}}
+{{--                                                <strong>{{ $message }}</strong>--}}
+{{--                                            </span>--}}
+{{--                                            @enderror--}}
+{{--                                        </div>--}}
 
-                                    </div>
-                                    <div class="col-md-6 ">
-                                        <label><span>ደረሰኝ ቁጥር :</span></label>
-                                        <div class="form-group"><input type="text"
-                                                                       name="voucher_no"
-                                                                       class="form-control @error('voucher_no') is-invalid @enderror"
-                                                                       required autocomplete="voucher_no" autofocus/>
+{{--                                    </div>--}}
+{{--                                    <div class="col-md-6 ">--}}
+{{--                                        <label><span>ደረሰኝ ቁጥር :</span></label>--}}
+{{--                                        <div class="form-group"><input type="text"--}}
+{{--                                                                       name="voucher_no"--}}
+{{--                                                                       class="form-control @error('voucher_no') is-invalid @enderror"--}}
+{{--                                                                       required autocomplete="voucher_no" autofocus/>--}}
 
-                                            @error('voucher_no')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
+{{--                                            @error('voucher_no')--}}
+{{--                                            <span class="invalid-feedback" role="alert">--}}
+{{--                                                <strong>{{ $message }}</strong>--}}
+{{--                                            </span>--}}
+{{--                                            @enderror--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
 
 
                                 <div class="" id="myTable">
@@ -136,7 +67,7 @@
                                         <div class="col-md-6">
                                             <label>ለውሎ አብል ብር :</label>
                                             <div class="form-group "><input id="wuloabel" name="wuloabel"
-                                                                            class="txtCal form-control @error('wuloabel') is-invalid @enderror"
+                                            value="{{{ $plan->wuloabel or '' }}}"    class="txtCal form-control @error('wuloabel') is-invalid @enderror"
                                                                             required autocomplete="wuloabel" autofocus/>
                                                 @error('wuloabel')
                                                 <span class="invalid-feedback" role="alert">
@@ -148,7 +79,7 @@
                                         </div>
                                         <div class="col-md-6 ">
                                             <label><span>ለትራንስፐት ብር :</span></label>
-                                            <div class=" form-group"><input type="text"
+                                            <div class=" form-group"><input type="text" value="{{{ $plan->transport or '' }}}"
                                                                             name="transport"
                                                                             class="txtCal form-control @error('transport') is-invalid @enderror"
                                                                             required autocomplete="transport"
@@ -166,8 +97,7 @@
 
                                         <div class="col-md-6">
                                             <label><span>ለነዳጅና ለቅባት ብ</span></label>
-                                            <div class="form-group"><input type="text" name="nafta_oil"
-                                                                           value="0"
+                                            <div class="form-group"><input type="text" name="nafta_oil" value="{{{ $plan->nafta_oil or '' }}}"
                                                                            class="txtCal form-control @error('nafta_oil') is-invalid @enderror"
                                                                            required autocomplete="nafta_oil" autofocus/>
                                                 @error('nafta_oil')
@@ -181,6 +111,7 @@
                                         <div class="col-md-6">
                                             <label><span>ለመጠባብቂያ ብር :</span></label>
                                             <div class="form-group"><input type="text" min="0" name="metebabekiya"
+                                                                           value="{{{ $plan->metebabekiya or '' }}}"
                                                                            class="txtCal form-control @error('metebabekiya') is-invalid @enderror"
                                                                            required autocomplete="metebabekiya"
                                                                            autofocus/>
@@ -196,7 +127,7 @@
 
                                         <div class="col-md-6 form-group">
                                             <table><span>ሌሎች ብር</span></table>
-                                            <div class="form-group"><input type="text" name="other" step =".01"
+                                            <div class="form-group"><input type="text" name="other" step =".01"  value="{{{ $plan->other or '' }}}"
                                                                            class="txtCal form-control @error('other') is-invalid @enderror"
                                                                            required autocomplete="other" autofocus/>
                                                 @error('other')
@@ -211,7 +142,7 @@
                                             <label><span>ድመር ብር :</span></label>
 
                                             <textarea readonly class='form-control'  step =".01" name="total"
-                                                      id="total_sum_value"></textarea>
+                                                      id="total_sum_value"> {{{ $plan->total or '' }}}</textarea>
 
                                         </div>
 

@@ -46,6 +46,8 @@ class Finance
             return redirect()->route('wanaazegaj');
         }
 //        return $next($request);
-
+        if (Auth::user()->role_id == 8) {
+            return redirect()->route('smanager');
+        }
     }
 }

@@ -1,5 +1,6 @@
 @extends('layouts.wanaazegaj')
 @section('css')
+    <link href="{{asset ('css/self-home.css')}}" rel="stylesheet">
 
     {{--    <link rel="stylesheet" href="{{asset ('css/bootstrap.min.css')}}">--}}
     <link href="{{asset ('css/jquery.dataTables.css')}}" rel="stylesheet">
@@ -16,7 +17,8 @@
                     <h1 class="m-0 text-dark">ያረጋገጥሃቸው  እቅዶች <small>ዝርዝር {{Auth::user()->department->name}}
                             @if ($i = 0)@endif
                             @foreach($planlist as $plist)
-                                @if( Auth::user()->department->id == $plist->user->department->id && Auth::user()->name == $plist->sign_name_wana)
+                                @if( Auth::user()->department->id == $plist->user->department->id
+                                    && Auth::user()->name == $plist->sign_name_wana && $plist->user->role_id == 3)
                                     @if($plist->check_by_hidet == 1 && $plist->check_by_super_hidet == 1)
                                         @if ($i ++) @endif
                                     @endif
@@ -66,10 +68,16 @@
                             @if($i === 0)
 
                                 <div class="card-header text-center">
-                                    <h3 class="text-center text-info"> NO PLANS'S YET </h3>
+                                    <h3 class="text-center text-info"> ምንም አቅድ የለም </h3>
 
                                 </div>
                             @else
+                                @include('layouts.ekid-menu-checked')
+                                <div class="card-header">
+                                    <h3 class="card-title">ዝርዝር </h3>
+                                </div>
+                                <div class="table pt-4">
+
                                 <table class="table table-hover table-striped table-bordered" id="dataTableAdmin" style="width:100%">
                                     <thead class="table-info">
 
@@ -81,8 +89,10 @@
                                     <th>ዳይሬክቶሬት/ሂደት</th>
                                     <th>የአስተባባሪ ፊርማ</th>
                                     <th>የሂደት መሪ ፊርማ</th>
+                                    <th>ም/ስራ አስኪያጅ(ስራ አስኪያጅ)</th>
                                     <th>ፋየይናንስ ፊርማ</th>
 {{--                                    <th>አስተካክል</th>--}}
+                                    <th>የእቅዱ ሂደት</th>
 
 {{--                                    <th></th>--}}
                                     <th></th>
@@ -113,6 +123,21 @@
 
                                                     @endif
                                                 </td>
+
+                                                <td>
+                                                    @if($plist->check_by_smanager == 0)
+                                                        <strong class="text-info">በሂደት ላይ</strong>
+                                                    @else
+                                                        <strong
+                                                            class="text-info">{{$plist->sign_name_smanager}}</strong>
+                                                    @endif
+                                                    @if($plist->check_by_wmanager == 0)
+                                                    @else
+                                                        <strong
+                                                            class="text-info">{{$plist->sign_name_wmanager}}</strong>
+                                                    @endif
+                                                </td>
+
                                                 <td>@if($plist->check_by_finance == 0)
                                                         <strong class="text-info">አልተፈረመበትም</strong>
                                                     @else
@@ -120,7 +145,19 @@
 
                                                     @endif
                                                 </td>
+                                                <td>@if($plist->cancel == 0)
+                                                        <strong class="text-info">በመጠባበቅ ላይ</strong>
+                                                    @else
+                                                        <strong class="text-info">
+                                                            ውድቅ ተደርጓል በ ፡
+                                                            {{$plist->cancel_name_smanager}}
+                                                            {{$plist->cancel_name_manager}}
+                                                            {{$plist->cancel_name_wana_image}}
+                                                            {{$plist->cancel_name}}
+                                                        </strong>
 
+                                                    @endif
+                                                </td>
 
                                                 <td>
 
@@ -148,6 +185,8 @@
                                     @endforeach
                                     </tbody>
                                 </table>
+
+                                </div>
                             @endif
 
 

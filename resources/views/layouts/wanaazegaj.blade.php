@@ -33,40 +33,8 @@
     <link rel="stylesheet" href="{{asset('css/mdb.min.css')}}">
     <!-- Your custom styles (optional) -->
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('css/active.tab.menu.css')}}">
 
-
-    <style>
-        .note-editable, .note-editor.note-airframe .note-editing-area .note-editable {
-            height: 300px;
-        }
-
-        .navbar-light .navbar-nav .nav-link {
-            color: white;
-            font-family: "Segoe UI Semibold";
-        }
-
-        .note-editable, .note-editor.note-airframe .note-editing-area .note-editable {
-            height: 300px;
-        }
-
-        .dropdown-item {
-            color: #00baff;
-        }
-
-        .navbar-no-expand .dropdown-menu {
-            background-color: whitesmoke;
-        }
-
-        .navbar.navbar-light .breadcrumb .nav-item .nav-link, .navbar.navbar-light .navbar-nav .nav-item .nav-link {
-            color: whitesmoke;
-            -webkit-transition: .35s;
-            transition: .35s;
-        }
-
-        .navbar .dropdown-menu a:not(.active) {
-            color: #00baff;
-        }
-    </style>
 
     @yield('css')
 </head>
@@ -76,7 +44,7 @@
     <!-- Navbar -->
     <nav class="main-header  fixed-top  navbar navbar-expand-md navbar-light navbar-white "
          style="background-color: #00aff0; text-color: white; font-size: larger;">
-        <div class="container">
+        <div class="container-fluid">
             <a href="{{route('wanaazegaj')}}" class="navbar-brand">
                 <img src="{{asset('img/ammalogo.png')}}" alt="AdminLTE Logo"
                      class="brand-image img-circle elevation-3"
@@ -97,31 +65,45 @@
 
                             @if ($i = 0)@endif
                             @foreach($planlist as $plist)
-                                @if( Auth::user()->department->id == $plist->user->department->id)
+                                @if( Auth::user()->department->id == $plist->user->department->id && $plist->user->role_id == 3)
                                     @if($plist->check_by_hidet == 1
+                                    && $plist->cancel == 0
                                     && $plist->check_by_super_hidet == 0
                                     && $plist->check_by_finance == 0 )
                                         @if ($i ++) @endif
                                     @endif
-
                                 @endif
+                            @endforeach
 
+
+                            @if ($is = 0)@endif
+                            @foreach($planlist as $plist)
+                                @if( Auth::user()->department->id == $plist->user->department->id && $plist->user->role_id == 4)
+                                    @if(
+                                    $plist->check_by_hidet == 0
+                                    && $plist->cancel == 0
+                                    && $plist->check_by_super_hidet == 0
+                                    && $plist->check_by_finance == 0 )
+                                        @if ($is ++) @endif
+                                    @endif
+                                @endif
                             @endforeach
 
 
                             <span class="badge badge-danger navbar-badge">
- {{$i}}
+                                {{$i + $is}}
                             </span></a>
                         {{--                        {{$planlist->count()}}--}}
                     </li>
-{{--                    <li class="nav-item">--}}
-{{--                        <a href="{{route('wanaazegaj-list-all')}}" class="nav-link">የፈረምክባቸው</a>--}}
-{{--                    </li>--}}
-                    <li class="nav-item">
-                        <a href="{{route('w1-ekid-report-list')}}" class="nav-link">ያልታዩ እቅድ ክንውኖች <i class="far fa-comments"></i>
+                    {{--                    <li class="nav-item">--}}
+                    {{--                        <a href="{{route('wanaazegaj-list-all')}}" class="nav-link">የፈረምክባቸው</a>--}}
+                    {{--                    </li>--}}
+                    <li class="{{'wanaazegaj/report/ekid-report-list' == request()->path()?'active':''}}  nav-item">
+                        <a class="nav-link"
+                           href="{{route('w1-ekid-report-list')}}">ያልታዩ እቅድ ክንውኖች <i class="far fa-comments"></i>
                             @if ($x = 0)@endif
                             @foreach($ekidreport as $elist)
-                                @if( Auth::user()->department->id == $elist->user->department->id)
+                                @if( Auth::user()->department->id == $elist->user->department->id && $plist->user->role_id == 3)
                                     @if($elist->check_by_hidet == 1
                                     && $elist->check_by_super_hidet == 0
                                     && $elist->check_by_finance == 0
@@ -140,12 +122,15 @@
                            aria-expanded="false" class="nav-link dropdown-toggle">የተፈረመባቸው እቅዶች </a>
                         <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
                             <li>
-                                <a href="{{route('wanaazegaj-list-all')}}" class="dropdown-item"
+                                <a class="{{'wanaazegaj/list-all' == request()->path()?'active':''}} dropdown-item"
+                                   href="{{route('wanaazegaj-list-all')}}"
                                    style="text-wrap: inherit; text-align: center">እቅዶች</a>
                             </li>
                             <li>
 
-                                <a href="{{route('wanaazegaj-ekid-list-all')}}" class="dropdown-item" style="text-wrap: inherit; text-align: center">እቅድ
+                                <a class="{{'wanaazegaj/report/ekid-list-all' == request()->path()?'active':''}} dropdown-item"
+                                   href="{{route('wanaazegaj-ekid-list-all')}}"
+                                   style="text-wrap: inherit; text-align: center">እቅድ
                                     ክንውኖች</a>
                             </li>
                             <li>
@@ -153,24 +138,33 @@
                             </li>
                         </ul>
                     </li>
-{{--                    <li class="nav-item">--}}
-{{--                        <a href="" class="nav-link">እቅድ መዝግብ</a>--}}
-{{--                    </li>--}}
-{{--                    <li class="nav-item dropdown">--}}
-{{--                        <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true"--}}
-{{--                           aria-expanded="false" class="nav-link dropdown-toggle">ዳይሬክቶርይት ዝርዝር</a>--}}
-{{--                        <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">--}}
-{{--                        --}}{{--                            @foreach($department as $dept)--}}
+                    <li class="{{'wanaazegaj/wana-cancel-ekid' == request()->path()?'active':''}} nav-item">
+                        <a href="{{route('wana-cancel-ekid-list')}}" class="nav-link">የተሰረዙ እቅዶች
+                        </a>
+                    </li>
+                    <li class="{{'wanaazegaj/self/self-ekid-home-wana' == request()->path()?'active':''}} nav-item">
+                        <a href="{{route('self-ekid-home-wana')}}" class="nav-link">የራስ እቅዶች
+                        </a>
+                    </li>
 
-{{--                        --}}{{--                                <li><a href="#" class="dropdown-item">{{$dept->slug}}</a>--}}
+                    {{--                    <li class="nav-item">--}}
+                    {{--                        <a href="" class="nav-link">እቅድ መዝግብ</a>--}}
+                    {{--                    </li>--}}
+                    {{--                    <li class="nav-item dropdown">--}}
+                    {{--                        <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true"--}}
+                    {{--                           aria-expanded="false" class="nav-link dropdown-toggle">ዳይሬክቶርይት ዝርዝር</a>--}}
+                    {{--                        <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">--}}
+                    {{--                        --}}{{--                            @foreach($department as $dept)--}}
+
+                    {{--                        --}}{{--                                <li><a href="#" class="dropdown-item">{{$dept->slug}}</a>--}}
 
 
-{{--                        --}}{{--                                </li>--}}
-{{--                        --}}{{--                        @endforeach--}}
+                    {{--                        --}}{{--                                </li>--}}
+                    {{--                        --}}{{--                        @endforeach--}}
 
-{{--                        <!-- End Level two -->--}}
-{{--                        </ul>--}}
-{{--                    </li>--}}
+                    {{--                        <!-- End Level two -->--}}
+                    {{--                        </ul>--}}
+                    {{--                    </li>--}}
                 </ul>
 
                 <!-- SEARCH FORM -->
@@ -210,7 +204,7 @@
 
                             Change Password
                         </a>
-                     <a class="dropdown-item" href="{{route('profile-sign-wana')}}">
+                        <a class="dropdown-item" href="{{route('profile-sign-wana')}}">
 
                             Profile
                         </a>

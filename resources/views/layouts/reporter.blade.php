@@ -34,8 +34,9 @@
     <!-- Your custom styles (optional) -->
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
 
+    <link rel="stylesheet" href="{{asset('css/active.tab.menu.css')}}">
 
-    <style>
+  {{--  <style>
         .note-editable, .note-editor.note-airframe .note-editing-area .note-editable {
             height: 300px;
         }
@@ -62,7 +63,7 @@
             -webkit-transition: .35s;
             transition: .35s;
         }
-    </style>
+    </style>--}}
     @yield('css')
 
 </head>
@@ -162,7 +163,7 @@
     </nav>
     <!-- /.navbar -->
 
-    <div class="content-wrapper  pt-5" >
+    <div class="content-wrapper  pt-5">
 
         <div class="content-header">
             <div class="container">

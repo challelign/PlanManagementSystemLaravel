@@ -100,19 +100,20 @@
                                     <label for="nodate"
                                            class="col-md-1 col-form-label">የቀን ብዛት</label>
                                     <div class="col-md-1">
-                                        <textarea class="form-control" name="nodate" readonly id='nodate' style="height: 35px">{{isset($plan) ? $plan->nodate:''}}</textarea>
+                                        <textarea class="form-control" name="nodate" readonly id='nodate'
+                                                  style="height: 35px">{{isset($plan) ? $plan->nodate:''}}</textarea>
 
-{{--                                        <input id="nodate"--}}
-{{--                                               class="form-control  @error('nodate') is-invalid @enderror" min="1"--}}
-{{--                                               name="nodate" placeholder="ብዛት" readonly--}}
-{{--                                               value="{{isset($plan) ? $plan->nodate:''}}" required--}}
-{{--                                               autocomplete="nodate" autofocus>--}}
+                                        {{--                                        <input id="nodate"--}}
+                                        {{--                                               class="form-control  @error('nodate') is-invalid @enderror" min="1"--}}
+                                        {{--                                               name="nodate" placeholder="ብዛት" readonly--}}
+                                        {{--                                               value="{{isset($plan) ? $plan->nodate:''}}" required--}}
+                                        {{--                                               autocomplete="nodate" autofocus>--}}
 
-{{--                                        @error('nodate')--}}
-{{--                                        <span class="invalid-feedback" role="alert">--}}
-{{--                                        <strong>{{ $message }}</strong>--}}
-{{--                                    </span>--}}
-{{--                                        @enderror--}}
+                                        {{--                                        @error('nodate')--}}
+                                        {{--                                        <span class="invalid-feedback" role="alert">--}}
+                                        {{--                                        <strong>{{ $message }}</strong>--}}
+                                        {{--                                    </span>--}}
+                                        {{--                                        @enderror--}}
                                     </div>
                                 </div>
 
@@ -121,7 +122,7 @@
                                     <label for="transport"
                                            class="col-md-2 col-form-label text-md-right">የሚጠቀመው የትራንስፖርት ዓይነት </label>
                                     <div class="col-md-8">
-{{--                                        <span> Diff:</span> <span id='diff'> - </span> <span> Days</span>--}}
+                                        {{--                                        <span> Diff:</span> <span id='diff'> - </span> <span> Days</span>--}}
                                         <select class="form-control @error('transport_id') is-invalid @enderror"
                                                 required
                                                 name="transport_id">
@@ -142,6 +143,44 @@
                                         </select>
 
                                         @error('transport_id')
+                                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                       </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+
+                                {{--pre_payment --}}
+                                <div class="form-group row">
+                                    <label for="pre_payment"
+                                           class="col-md-2 col-form-label text-md-right">ቅድመ ክፍያ መውሰድ ትፈልጋለህ </label>
+                                    <div class="col-md-8">
+                                        {{--                                        <span> Diff:</span> <span id='diff'> - </span> <span> Days</span>--}}
+                                        <select class="form-control @error('pre_payment') is-invalid @enderror"
+                                                required
+                                                name="pre_payment">
+                                            <option selected disabled>ይምረጡ</option>
+
+                                            <option value="0"
+                                                    @if(isset($plan))
+                                                    @if($plan->pre_payment === 0)
+                                                    selected
+                                                @endif
+                                                @endif >
+                                                ክፍያ አልፈልግም (-- NO --)
+                                            </option>
+                                            <option value="1"
+                                                    @if(isset($plan))
+                                                    @if($plan->pre_payment === 1)
+                                                    selected
+                                                @endif
+                                                @endif >
+                                                ቅድመ ክፍያ ይሰጠኝ (-- YES --)
+                                            </option>
+                                        </select>
+
+                                        @error('pre_payment')
                                         <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                        </span>
@@ -306,7 +345,7 @@
                 disableInput: true,
                 calendar: calendar,
                 dateFormat: "yyyy/mm/dd",
-                minDate:0,
+                minDate: 0,
                 // miniDate:new Date(),
                 // dateFormat: "mm-dd-yyyy",
                 enableTime: true,
@@ -319,7 +358,7 @@
                 calendar: calendar,
                 dateFormat: "yyyy/mm/dd",
                 // dateFormat: "mm-dd-yyyy",
-                minDate:0,
+                minDate: 0,
 
                 enableTime: true,
             });

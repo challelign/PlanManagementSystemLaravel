@@ -40,5 +40,8 @@ class Hidet
         if (Auth::user()->role_id == 2) {
             return redirect()->route('wanaazegaj');
         }
+        if (Auth::user()->role_id == 8) {
+            return redirect()->route('smanager');
+        }
     }
 }

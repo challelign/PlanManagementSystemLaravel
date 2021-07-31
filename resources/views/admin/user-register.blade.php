@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-
+<title>ተጠቃሚ መዝግብ</title>
 @section('content')
 
 
@@ -10,8 +10,8 @@
         <div class="container">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text-dark"> ተጠቃሚ መዝግብ
-                        <small></small></h1>
+                    <h3 class="m-0 text-dark"> ተጠቃሚ መዝግብ
+                        <small></small></h3>
                 </div><!-- /.col -->
                 {{--                <div class="col-sm-6">--}}
                 {{--                    <ol class="breadcrumb float-sm-right">--}}
@@ -41,7 +41,7 @@
                                 {{--Full name --}}
                                 <div class="form-group row">
                                     <label for="name"
-                                           class="col-md-2 col-form-label text-md-right">{{ __('ሙሉ ስም እሰገባ') }}</label>
+                                           class="col-md-2 col-form-label text-md-right">{{ __('ሙሉ ስም አሰገባ') }}</label>
                                     <div class="col-md-4">
                                         <input id="name" type="text"
                                                class="form-control @error('name') is-invalid @enderror"
@@ -115,7 +115,7 @@
                                 <div class="form-group row">
                                     <label for="halafinet"
                                            class="col-md-2 col-form-label text-md-right">ሀላፊነት </label>
-                                    <div class="col-md-8">
+                                    <div class="col-md-4">
                                         <select class="form-control select2 @error('halafinet') is-invalid @enderror"
                                                 required
                                                 name="halafinet">
@@ -145,6 +145,25 @@
                                        </span>
                                         @enderror
                                     </div>
+
+                                    <label for="salary"
+                                           class="col-md-1 col-form-label text-md-right ">{{ __('ደመወዝ') }}</label>
+                                    <div class="col-md-3">
+                                        <input id="salary" type="text"
+                                               class="form-control @error('salary') is-invalid @enderror"
+                                               name="salary"
+                                               value="{{ old('salary') }}" required
+                                               autocomplete="salary"
+                                               autofocus>
+
+                                        @error('salary')
+                                        <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                        @enderror
+                                    </div>
+
+
                                 </div>
                                 <div class="form-group row">
                                     <label for="password"
@@ -163,7 +182,7 @@
                                 </div>
                                 <div class="form-group row">
                                     <label for="password-confirm"
-                                           class="col-md-2 col-form-label text-md-right">ፓስወርድ እረጋግጥ</label>
+                                           class="col-md-2 col-form-label text-md-right">ፓስወርድ አረጋግጥ</label>
                                     <div class="col-md-8">
                                         <input id="password-confirm" type="password" class="form-control"
                                                name="password_confirmation" required autocomplete="new-password">

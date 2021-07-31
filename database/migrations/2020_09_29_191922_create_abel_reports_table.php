@@ -21,41 +21,42 @@ class CreateAbelReportsTable extends Migration
             $table->integer('payment_id')->nullable(); //from old table
             $table->integer('transport_id')->nullable();
             $table->integer('department_id')->nullable();
+            $table->longText('department_name')->nullable();
             $table->integer('is_abel_complated')->default(0);
             $table->integer('plan_id');
 //            $table->string('old_voucher_no')->nullable();
 
 
-            $table->timestamp('sdate');
+            $table->dateTime('sdate');
             $table->string('splace');
 //            $table->time('stime');
 
             $table->string('dkplace');
-            $table->integer('dkbirr')->nullable();
+            $table->decimal('dkbirr')->nullable();
 
 
 
             $table->string('dmplace');
-            $table->string('dmbirr')->nullable();
+            $table->decimal('dmbirr')->nullable();
 
             $table->string('deplace');
-            $table->integer('debirr')->nullable();
+            $table->decimal('debirr')->nullable();
 
-            $table->timestamp('workddate');
+            $table->dateTime('workddate');
 //            $table->time('workdtime');
 
             $table->string('adarplace');
-            $table->integer('adarbirr')->nullable();
+            $table->decimal('adarbirr')->nullable();
 
-            $table->integer('nodatef')->nullable();
-            $table->integer('alga')->nullable();
-            $table->integer('wuloabel_meten')->nullable();
-            $table->integer('transport_birr')->nullable();
-            $table->integer('nedaje_qibat')->nullable();
+            $table->decimal('nodatef')->nullable();
+            $table->decimal('alga')->nullable();
+            $table->decimal('wuloabel_meten')->nullable();
+            $table->decimal('transport_birr')->nullable();
+            $table->decimal('nedaje_qibat')->nullable();
 
 
 
-            $table->integer('total')->nullable(); // sum of each row
+            $table->decimal('total')->nullable(); // sum of each row
 
 
 
@@ -70,6 +71,13 @@ class CreateAbelReportsTable extends Migration
             $table->boolean('check_by_super_hidet')->default('0');
             $table->boolean('check_by_finance')->default('0');
 
+            $table->longText('sign_name_wmanager')->nullable(); // id of user
+            $table->longText('sign_name_smanager')->nullable(); // id of user
+
+
+
+            $table->boolean('check_by_smanager')->default('0');
+            $table->boolean('check_by_wmanager')->default('0');
 
 
 

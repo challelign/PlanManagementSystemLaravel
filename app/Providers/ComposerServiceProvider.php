@@ -50,6 +50,9 @@ class ComposerServiceProvider extends ServiceProvider
 //            , 'admin.*'
 //            , 'admin.directorate.*'
             , 'hidet.index'
+
+            , 'admin.user-directorate'
+
             , 'layouts.hidet'
             , 'finance.invoice-print'
             , 'finance.print'
@@ -73,15 +76,17 @@ class ComposerServiceProvider extends ServiceProvider
         view::composer([
             'layouts.*'
 //            , 'admin.directorate.reset-report-form'
-
+            , 'admin.user-directorate'
             ,'layouts.finance', 'finance.index'
-            , 'finance.view-details', 'finance.first-payment'
+            , 'finance.view-details'
+            , 'finance.first-payment'
             , 'finance.done-payment-first'
             , 'hidet.report.index'
             , 'layouts.hidet'
             , 'finance.invoice-print'
             , 'finance.print'
             , 'wanaazegaj.index'
+            , 'smanager.index'
             , 'layouts.wanaazegaj'
 //            ,'admin.directorate.list-details-report-reset'
 //            ,'admin.directorate.reset-report-form'
@@ -94,6 +99,7 @@ class ComposerServiceProvider extends ServiceProvider
                 ->with('department', Department::all())
                 ->with('transport', Transport::all())
                 ->with('users', User::all())
+
                 ->with('payment', Payment::all());
         });
 

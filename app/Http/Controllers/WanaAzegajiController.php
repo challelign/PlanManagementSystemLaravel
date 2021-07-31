@@ -83,16 +83,25 @@ class WanaAzegajiController extends Controller
         session()->flash('success', 'The Plan is Approved ');
         return redirect(route('wanaazegaj'));
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function wanaCancelPlan(Request $request, $id)
     {
-        //
+
+        $approve = Plan::findorFail($id);
+        $approve->cancel_name_wana = Auth::user()->name; // wanaazegaje
+        $approve->cancel = '1';
+//        $approve->check_by_hidet = '0';
+        $approve->save();
+        session()->flash('error', 'እቅዱን ውድቅ አድርገሀል ');
+        return redirect()->back();
+    }
+
+    public function wanaCancelEkidList()
+    {
+        return view('wanaazegaj.rejected.cancel-ekid')
+            ->with('planlist', Plan::all())
+            ->with('transport', Transport::all())
+            ->with('department', Department::all());
+
     }
 
     public function listAll()
@@ -110,51 +119,28 @@ class WanaAzegajiController extends Controller
             ->with('department', Department::all());
 
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function listAllMDirector()
     {
-        //
+        return view('wanaazegaj.hidet.list-all-mdirector')
+            ->with('planlist', Plan::all())
+            ->with('transport', Transport::all())
+            ->with('users', User::all())
+            ->with('department', Department::all());
+
+    }
+    public function wanaCancelAllmdirector()
+    {
+        return view('wanaazegaj.rejected.cancel-all-mdirector')
+            ->with('planlist', Plan::all())
+            ->with('transport', Transport::all())
+            ->with('users', User::all())
+            ->with('department', Department::all());
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+
 
 
     public function changePassword()
@@ -185,5 +171,12 @@ class WanaAzegajiController extends Controller
     }
     public function profileSign(){
         return view('wanaazegaj.profile-sign');
+    }
+
+
+
+
+    public function hidetEkidList(){
+        return view('wanaazegaj.hidet.hidet-ekid-list')->with('planlist', Plan::all());
     }
 }

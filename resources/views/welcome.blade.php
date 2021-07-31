@@ -261,8 +261,8 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center row">
-            <div class="col-md-4 my-5">
-                <div class="item uncover">
+            <div class="col-md-4 my-5 d-md-none d-lg-block d-none d-sm-block">
+                <div class="item uncover d-md-none d-lg-block">
                     <img src="{{asset('img/ammalogo.png')}}" alt="image" width="330px;" height="370px;">
                     <div class="overlay">
                         <span>"</span>

@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+<title>Users List </title>
 
 @section('css')
 
@@ -6,6 +7,56 @@
     <link href="{{asset ('css/jquery.dataTables.css')}}" rel="stylesheet">
 @endsection
 
+<style>
+
+    .custom-checkbox {
+        min-height: 1rem;
+        padding-left: 0;
+        margin-right: 0;
+        cursor: pointer;
+    }
+    .custom-checkbox .custom-control-indicator {
+        content: "";
+        display: inline-block;
+        position: relative;
+        width: 30px;
+        height: 10px;
+        background-color: #818181;
+        border-radius: 15px;
+        margin-right: 10px;
+        -webkit-transition: background .3s ease;
+        transition: background .3s ease;
+        vertical-align: middle;
+        margin: 0 16px;
+        box-shadow: none;
+    }
+    .custom-checkbox .custom-control-indicator:after {
+        content: "";
+        position: absolute;
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        background-color: #f1f1f1;
+        border-radius: 21px;
+        box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4);
+        left: -2px;
+        top: -4px;
+        -webkit-transition: left .3s ease, background .3s ease, box-shadow .1s ease;
+        transition: left .3s ease, background .3s ease, box-shadow .1s ease;
+    }
+    .custom-checkbox .custom-control-input:checked ~ .custom-control-indicator {
+        background-color: #84c7c1;
+        background-image: none;
+        box-shadow: none !important;
+    }
+    .custom-checkbox .custom-control-input:checked ~ .custom-control-indicator:after {
+        background-color: #84c7c1;
+        left: 15px;
+    }
+    .custom-checkbox .custom-control-input:focus ~ .custom-control-indicator {
+        box-shadow: none !important;
+    }
+</style>
 @section('content')
 
     <!-- Content Wrapper. Contains page content -->
@@ -59,9 +110,11 @@
                                     <th>User register</th>
                                     <th>User Updated</th>
                                     <th>ተጠቃሚ አግድ</th>
-                                    <th>ፊርማ አስገባ</th>
+                                    <th>አስተካክል</th>
                                     <th>አጥፋ</th>
-                                    <th></th>
+                                    <th>ፊርማ አስገባ</th>
+                                    {{--                                    <th></th>--}}
+                                    {{--                                    <th></th>--}}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -78,53 +131,34 @@
 
 
                                         <td>
-                                            <div class="dropdown form-group">
-                                                <button class="btn btn-info btn-sm dropdown-toggle"
-                                                        type="button"
-                                                        id="menu1"
-                                                        data-toggle="dropdown">ሁኔታ
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu" role="menu"
-                                                    aria-labelledby="menu1">
+                                            @if($user->active == 1)
+                                                <form action="{{route('admin.make-inactive', $user->id)}}"
+                                                      method="post">
+                                                    @csrf
+                                                    <button type="submit"
+                                                            class="btn btn-default btn-sm form-control custom-control custom-checkbox">
+                                                            <input type="checkbox" checked class="custom-control-input">
+                                                            <span class="custom-control-indicator"></span>
+                                                    </button>
 
-                                                    <li>
-                                                        @if($user->active == 1)
-                                                            <form action="{{route('admin.make-inactive', $user->id)}}"
-                                                                  method="post">
-                                                                @csrf
-                                                                <button type="submit"
-                                                                        class="btn btn-default btn-sm form-control">
-                                                                    ተጠቃሚውን ከልክል
-                                                                </button>
+                                                </form>
+                                            @else
+                                                <form action="{{route('admin.make-active', $user->id)}}"
+                                                      method="post">
+                                                    @csrf
+                                                    <button type="submit"
+                                                            class="btn btn-danger btn-sm form-control  custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input">
+                                                            <span class="custom-control-indicator" ></span>
+                                                    </button>
 
-                                                            </form>
-                                                        @endif
-                                                    </li>
+                                                </form>
+                                            @endif
+{{--                                        <td>--}}
 
-                                                    <li>
-                                                        @if($user->active == 0)
-                                                            <form action="{{route('admin.make-active', $user->id)}}"
-                                                                  method="post">
-                                                                @csrf
-                                                                <button type="submit"
-                                                                        class="btn btn-default btn-sm form-control">
-
-                                                                    ተጠቃሚውን ፍቀድ
-                                                                </button>
-
-                                                            </form>
-                                                        @endif
-                                                    </li>
-
-                                                </ul>
-                                            </div>
-                                        </td>
                                         <td>
                                             <a class="btn btn-sm btn-warning  my-1"
                                                href="{{route('edit',$user->id)}}">አስተካክል</a>
-
-
                                         </td>
                                         <td>
                                             <button class="btn btn-sm btn-danger"
@@ -132,9 +166,10 @@
                                             </button>
                                         </td>
                                         <td>
-                                            @if($user->role->name == 'ዋና አዘጋጅ' || $user->role->name == 'ምክትል ዋና አዘጋጅ'|| $user->role->name == 'ዋና ስራ አስኪያጅ' || $user->role->name ==  'ፋይናንስ')
-                                                <a href="{{route('user-upload-sign',$user->id)}}" class="btn btn-sm btn-danger" style="width: 110px"
-                                                       >ፊርማ አስገባ
+                                            @if($user->role->name == 'ምክትል ስራ አስኪያጅ' || $user->role->name == 'ምክትል ዋና አዘጋጅ (ም/ዳይሬክተር)'|| $user->role->name == 'ዋና ስራ አስኪያጅ'|| $user->role->name == 'ፋይናንስ ባለሙያ' || $user->role->name ==  'ዋና አዘጋጅ (ዋና/ዳይሬክተር)')
+                                                <a href="{{route('user-upload-sign',$user->id)}}"
+                                                   class="btn btn-sm btn-danger" style="width: 110px"
+                                                >ፊርማ አስገባ
                                                 </a>
                                             @endif
                                         </td>

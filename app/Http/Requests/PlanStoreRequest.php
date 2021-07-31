@@ -27,9 +27,11 @@ class PlanStoreRequest extends FormRequest
             'title' => 'required|unique:plans',
             'startdate'=>'required',
             'enddate'=>'required',
-            'nodate'=>'required',
+//            'nodate'=>'required|numeric',
+            'nodate'=>'required|numeric|min:1',
             'transport_id'=>'required',
-            'task'=>'required|min:20'
+            'task'=>'required|min:20',
+            'pre_payment'=>'required'
 
         ];
     }

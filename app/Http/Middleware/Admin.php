@@ -31,10 +31,10 @@ class Admin
             return redirect()->route('welcome');
         }
 //        role 3 = user
-        if (Auth::check() && Auth::user()->role_id == 3) {
+ /*       if (Auth::check() && Auth::user()->role_id == 3) {
             return redirect()->route('reporter');
 
-        }
+        }*/
 ////        role 5 = finance
         if (Auth::check() && Auth::user()->role_id == 5) {
             return redirect()->route('finance');
@@ -56,7 +56,9 @@ class Admin
         if (Auth::user()->role_id == 2) {
             return redirect()->route('wanaazegaj');
         }
-
+        if (Auth::user()->role_id == 8) {
+            return redirect()->route('smanager');
+        }
 //        if($request->session()->get('role_id') == ''){
 //            return redirect('/');
 //        }

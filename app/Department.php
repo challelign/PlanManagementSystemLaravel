@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Department extends Model
 {
+
+    protected $fillable = [
+        'name', 'slug',
+
+    ];
+
     public function user()
     {
         return $this->hasMany(User::class);

@@ -64,7 +64,7 @@
 
 
                                 <div class="card-header text-center">
-                                    <h3 class="text-center text-info"> NO PLANS'S YET </h3>
+                                    <h3 class="text-center text-info"> የተላከ አቅድ የለም  </h3>
 
                                 </div>
 
@@ -81,6 +81,7 @@
                                     <th>ሂደት</th>
                                     <th>የአስተባባሪ ፊርማ</th>
                                     <th>የሂደት መሪ ፊርማ</th>
+                                    <th>የም/ስራ አስኪያጅ ፊርማ</th>
                                     <th>ፋየይናንስ ፊርማ</th>
                                     <th>አስተካክል</th>
                                     <th></th>
@@ -95,7 +96,8 @@
                                                 <td>{{$plist->nodate}}</td>
 
                                                 <td>{{$plist->title}}</td>
-                                                <td>{{$plist->department->name}}</td>
+{{--                                                <td>{{$plist->department->name}}</td>--}}
+                                                <td>{{$plist->department_name}}</td>
                                                 <td>@if($plist->check_by_hidet == 0)
                                                         <strong class="text-info">አልተፈረመበትም</strong>
                                                     @else
@@ -109,6 +111,13 @@
                                                     @else
                                                         <strong class="text-info">{{$plist->sign_name_wana}}</strong>
 
+                                                    @endif
+                                                </td>
+
+                                                <td>@if($plist->check_by_smanager == 0)
+                                                        <strong class="text-info">አልተፈረመበትም</strong>
+                                                    @else
+                                                        <strong class="text-info">{{$plist->sign_name_smanager}}</strong>
                                                     @endif
                                                 </td>
                                                 <td>@if($plist->check_by_finance == 0)
@@ -132,7 +141,7 @@
 
                                                 @if($plist->check_by_finance == 0)
                                                     <td>
-                                                        <a href="{{route('first-payment', $plist->id)}}"
+                                                        <a href="{{route('first-payment-step1', $plist->id)}}"
                                                            class="btn btn-sm btn-warning" style="width: 110px;">ክፍያ ፈጽም
                                                         </a>
                                                     </td>

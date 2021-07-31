@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('username')->unique();
-            $table->integer('salary')->nullable();
+            $table->decimal('salary')->nullable();
             $table->string('upload_image')->nullable();
             $table->integer('role_id');
             $table->integer('status_id')->nullable(); // may be unneccesary
