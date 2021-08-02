@@ -235,6 +235,8 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
     Route::get('/wanaazegaj/list-all', 'WanaAzegajiController@listAll')->name('wanaazegaj-list-all')->middleware(['auth', 'wanaazegaj']);
     Route::get('/wanaazegaj/{wanaazegaj}/single-article', 'WanaAzegajiController@listSingle')->name('wanaazegaj-single-details')->middleware(['auth', 'wanaazegaj']);
 
+    Route::get('/wanaazegaj/hidet/list-all-mdirector', 'WanaAzegajiController@listAllMDirector')->name('wanaazegaj-list-all-mdirector')->middleware(['auth', 'wanaazegaj']);
+
 //for single admin user  change password
     Route::get('/wanaazegaj/change-password', 'WanaAzegajiController@changePassword')->name('change-password')->middleware(['auth', 'wanaazegaj']);
     Route::post('/wanaazegaj/change-password', 'WanaAzegajiController@updatePassword')->name('update-password')->middleware(['auth', 'wanaazegaj']);

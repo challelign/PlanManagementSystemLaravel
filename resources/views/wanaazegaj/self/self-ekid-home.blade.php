@@ -7,10 +7,6 @@
 @endsection
 
 @section('content')
-
-    <!-- Content Wrapper. Contains page content -->
-
-    <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container">
             <div class="row mb-2">
@@ -35,7 +31,6 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-
                         <div class="content-header">
                             <div class="container">
                                 <div class="row mb-2">
@@ -85,15 +80,15 @@
                                                         <th>ቆይታ ቀን</th>
                                                         <th>የስራርእስ</th>
                                                         <th>ሂደት</th>
-{{--                                                        <th>የሂደት መሪ ፊርማ</th>--}}
+                                                        {{--                                                        <th>የሂደት መሪ ፊርማ</th>--}}
                                                         <th>ም/ስራ አስኪያጅ(ዋና ስራ አስኪያጅ)</th>
                                                         <th>ፋየይናንስ ፊርማ</th>
                                                         <th>የእቅዱ ሂደት</th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-{{--                                                        <th></th>--}}
-{{--                                                        <th></th>--}}
+                                                        {{--                                                        <th></th>--}}
+                                                        {{--                                                        <th></th>--}}
                                                         </thead>
                                                         <tbody>
                                                         @foreach($planlist as $plist)
@@ -111,13 +106,13 @@
                                                                     <td>{{$plist->title}}</td>
                                                                     <td>{{$plist->user->department->name}}</td>
 
-{{--                                                                    <td>@if($plist->check_by_super_hidet == 0)--}}
-{{--                                                                            <strong class="text-info">በሂደት ላይ</strong>--}}
-{{--                                                                        @else--}}
-{{--                                                                            <strong class="text-info">ጸድቋል</strong>--}}
+                                                                    {{--                                                                    <td>@if($plist->check_by_super_hidet == 0)--}}
+                                                                    {{--                                                                            <strong class="text-info">በሂደት ላይ</strong>--}}
+                                                                    {{--                                                                        @else--}}
+                                                                    {{--                                                                            <strong class="text-info">ጸድቋል</strong>--}}
 
-{{--                                                                        @endif--}}
-{{--                                                                    </td>--}}
+                                                                    {{--                                                                        @endif--}}
+                                                                    {{--                                                                    </td>--}}
                                                                     <td>@if($plist->check_by_smanager == 0)
                                                                             <strong class="text-info">በሂደት ላይ</strong>
                                                                         @else
@@ -169,34 +164,34 @@
                                                                         <a href="{{route('self-edit-ekid-wana',$plist->id)}}"
                                                                            class="btn btn-sm btn-primary">አስተካክል </a>
                                                                     </td>
-{{--                                                                    <td>@if($plist->cancel == 0)--}}
-{{--                                                                            @if($plist->check_by_finance == 0)--}}
-{{--                                                                                <form--}}
-{{--                                                                                    action="{{route('approve-plan',$plist->id)}}"--}}
-{{--                                                                                    method="post">--}}
-{{--                                                                                    @csrf--}}
-{{--                                                                                    <button--}}
-{{--                                                                                        class="btn btn-sm btn-info my-0">--}}
-{{--                                                                                        ማጽደቅ--}}
-{{--                                                                                    </button>--}}
-{{--                                                                                </form>--}}
-{{--                                                                            @endif--}}
-{{--                                                                        @endif--}}
-{{--                                                                    </td>--}}
-{{--                                                                    <td>--}}
-{{--                                                                        @if($plist->cancel == 0)--}}
-{{--                                                                            <form--}}
-{{--                                                                                action="{{route('cancel-plan',$plist->id)}}"--}}
-{{--                                                                                method="post">--}}
-{{--                                                                                @csrf--}}
-{{--                                                                                <button--}}
-{{--                                                                                    class="btn btn-sm btn-red my-0"--}}
-{{--                                                                                    style="width: 100px">ውድቅ--}}
-{{--                                                                                    አድርግ--}}
-{{--                                                                                </button>--}}
-{{--                                                                            </form>--}}
-{{--                                                                        @endif--}}
-{{--                                                                    </td>--}}
+                                                                    {{--                                                                    <td>@if($plist->cancel == 0)--}}
+                                                                    {{--                                                                            @if($plist->check_by_finance == 0)--}}
+                                                                    {{--                                                                                <form--}}
+                                                                    {{--                                                                                    action="{{route('approve-plan',$plist->id)}}"--}}
+                                                                    {{--                                                                                    method="post">--}}
+                                                                    {{--                                                                                    @csrf--}}
+                                                                    {{--                                                                                    <button--}}
+                                                                    {{--                                                                                        class="btn btn-sm btn-info my-0">--}}
+                                                                    {{--                                                                                        ማጽደቅ--}}
+                                                                    {{--                                                                                    </button>--}}
+                                                                    {{--                                                                                </form>--}}
+                                                                    {{--                                                                            @endif--}}
+                                                                    {{--                                                                        @endif--}}
+                                                                    {{--                                                                    </td>--}}
+                                                                    {{--                                                                    <td>--}}
+                                                                    {{--                                                                        @if($plist->cancel == 0)--}}
+                                                                    {{--                                                                            <form--}}
+                                                                    {{--                                                                                action="{{route('cancel-plan',$plist->id)}}"--}}
+                                                                    {{--                                                                                method="post">--}}
+                                                                    {{--                                                                                @csrf--}}
+                                                                    {{--                                                                                <button--}}
+                                                                    {{--                                                                                    class="btn btn-sm btn-red my-0"--}}
+                                                                    {{--                                                                                    style="width: 100px">ውድቅ--}}
+                                                                    {{--                                                                                    አድርግ--}}
+                                                                    {{--                                                                                </button>--}}
+                                                                    {{--                                                                            </form>--}}
+                                                                    {{--                                                                        @endif--}}
+                                                                    {{--                                                                    </td>--}}
                                                                 </tr>
                                                             @endif
                                                         @endforeach
@@ -209,7 +204,8 @@
                                                          aria-labelledby="deleteModalLabel"
                                                          aria-hidden="true">
                                                         <div class="modal-dialog" role="document">
-                                                            <form action="" method="post" id="deleteTransportForm"> //form.action =
+                                                            <form action="" method="post" id="deleteTransportForm">
+                                                                //form.action =
                                                                 '/categories/' + id;
                                                                 below
                                                                 have script file
@@ -217,8 +213,10 @@
                                                                 @csrf
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h5 class="modal-title" id="deleteModalLabel">Delete Plan /እቅድ ሰርዝ </h5>
-                                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                        <h5 class="modal-title" id="deleteModalLabel">
+                                                                            Delete Plan /እቅድ ሰርዝ </h5>
+                                                                        <button type="button" class="close"
+                                                                                data-dismiss="modal"
                                                                                 aria-label="Close">
                                                                             <span aria-hidden="true">&times;</span>
                                                                         </button>
@@ -229,10 +227,13 @@
                                                                         </p>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No,
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                                data-dismiss="modal">No,
                                                                             Go back
                                                                         </button>
-                                                                        <button type="submit" class="btn btn-danger">Yes , Delete</button>
+                                                                        <button type="submit" class="btn btn-danger">Yes
+                                                                            , Delete
+                                                                        </button>
                                                                     </div>
                                                                 </div>
                                                             </form>

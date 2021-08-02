@@ -47,11 +47,9 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body table-responsive p-0">
-                            @if($is === 0)
-
+                            @if($is == 0)
                                 <div class="card-header text-center">
                                     <h3 class="text-center text-info"> ምንም አቅድ የለም </h3>
-
                                 </div>
                             @else
                                 @include('layouts.ekid-menu-checked')
@@ -80,9 +78,10 @@
                                         <th></th>
                                         </thead>
                                         <tbody>
+
                                         @foreach($planlist as $plist)
                                             @if(($plist->check_by_hidet == 0 && $plist->check_by_super_hidet == 1
-                                               && $plist->cancel == 0   &&
+                                               && $plist->cancel == 0 && $plist->check_by_finance == 0  &&
                                                     Auth::user()->department->id == $plist->user->department->id && $plist->user->role_id == 4
                                                     ))
                                                 <tr>
